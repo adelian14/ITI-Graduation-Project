@@ -1,0 +1,158 @@
+```json
+{
+  "course_title": "Intro to Machine Learning with Python",
+  "description": "Foundations of machine learning including concepts, techniques, and Python implementation.",
+  "modules": [
+    {
+      "title": "Module 1.1: Introduction to Machine Learning",
+      "lessons": [
+        "What is Machine Learning? Definition and Core Concepts Distinction: AI vs. ML vs. Deep Learning Common Applications of ML",
+        "Types of Machine Learning Supervised Learning (Prediction from labeled data) Unsupervised Learning (Finding patterns in unlabeled data) Reinforcement Learning (Brief overview)",
+        "The Machine Learning Workflow Problem Definition -> Data Collection -> Data Preprocessing -> Model Training -> Model Evaluation -> Deployment (Overview)"
+      ]
+    },
+    {
+      "title": "Module 1.2: Setting Up Your ML Environment",
+      "lessons": [
+        "Installing Python & Anaconda Distribution",
+        "Introduction to Jupyter Notebooks / Google Colab",
+        "Basic Python Refresher for Data Science (Variables, Data Structures, Functions, Loops)"
+      ]
+    },
+    {
+      "title": "Module 1.3: Essential Python Libraries for ML",
+      "lessons": [
+        "NumPy for Numerical Operations (Arrays, Vectorization)",
+        "Pandas for Data Manipulation and Analysis (DataFrames, Series, I/O)",
+        "Matplotlib & Seaborn for Data Visualization (Basic plots, exploratory data analysis)"
+      ]
+    },
+    {
+      "title": "Module 2.1: Understanding and Preparing Data",
+      "lessons": [
+        "Data Loading and Initial Inspection (CSV, Excel, etc. with Pandas)",
+        "Handling Missing Values (Identification, Imputation strategies)",
+        "Encoding Categorical Features (One-Hot Encoding, Label Encoding)",
+        "Feature Scaling (Standardization, Normalization - Importance for certain algorithms)"
+      ]
+    },
+    {
+      "title": "Module 2.2: Basic Feature Engineering & Selection",
+      "lessons": [
+        "Creating New Features (Polynomial features, combining features)",
+        "Simple Feature Selection Techniques (e.g., correlation analysis, variance threshold)"
+      ]
+    },
+    {
+      "title": "Module 3.1: Introduction to Supervised Learning & Regression",
+      "lessons": [
+        "Supervised Learning Deep Dive (Training data, labels, predictions)",
+        "What is Regression? (Predicting continuous values, use cases)"
+      ]
+    },
+    {
+      "title": "Module 3.2: Linear Regression",
+      "lessons": [
+        "Simple Linear Regression (Concept, Equation, Least Squares)",
+        "Multiple Linear Regression (Extending to multiple features)",
+        "Implementing Linear Regression with Scikit-learn",
+        "Evaluating Regression Models (Mean Absolute Error (MAE), Mean Squared Error (MSE), Root Mean Squared Error (RMSE), R-squared)"
+      ]
+    },
+    {
+      "title": "Module 4.1: Introduction to Classification",
+      "lessons": [
+        "What is Classification? (Predicting discrete labels/categories, binary vs. multi-class)"
+      ]
+    },
+    {
+      "title": "Module 4.2: Logistic Regression",
+      "lessons": [
+        "Logistic Regression Concepts (Sigmoid function, Probability estimation)",
+        "Implementing Logistic Regression with Scikit-learn"
+      ]
+    },
+    {
+      "title": "Module 4.3: Decision Trees",
+      "lessons": [
+        "Decision Tree Concepts (Splitting criteria, Impurity measures: Gini, Entropy)",
+        "Implementing Decision Trees with Scikit-learn",
+        "Visualizing Decision Trees"
+      ]
+    },
+    {
+      "title": "Module 4.4: K-Nearest Neighbors (KNN)",
+      "lessons": [
+        "KNN Concepts (Distance metrics, K-value selection)",
+        "Implementing KNN with Scikit-learn"
+      ]
+    },
+    {
+      "title": "Module 5.1: General Model Evaluation Principles",
+      "lessons": [
+        "Training, Validation, and Test Sets (Importance of data splitting)",
+        "Cross-Validation (K-Fold Cross-Validation, Leave-One-Out)"
+      ]
+    },
+    {
+      "title": "Module 5.2: Evaluating Classification Models",
+      "lessons": [
+        "Confusion Matrix (True Positives, False Positives, True Negatives, False Negatives)",
+        "Metrics: Accuracy, Precision, Recall, F1-Score (When to use which)",
+        "ROC Curve and Area Under the Curve (AUC)"
+      ]
+    },
+    {
+      "title": "Module 5.3: Understanding Model Performance Issues",
+      "lessons": [
+        "Bias-Variance Trade-off",
+        "Overfitting and Underfitting (Identification, Visualizations, Causes)",
+        "Strategies to Mitigate Overfitting (Regularization - brief mention, more data, simpler models)"
+      ]
+    },
+    {
+      "title": "Module 5.4: Basic Model Tuning",
+      "lessons": [
+        "Hyperparameter Tuning Concepts",
+        "Grid Search with Scikit-learn (Automated hyperparameter optimization)"
+      ]
+    },
+    {
+      "title": "Module 6.1: Introduction to Unsupervised Learning",
+      "lessons": [
+        "What is Unsupervised Learning? (Finding structure in unlabeled data, use cases)",
+        "Common Unsupervised Learning Tasks (Clustering, Dimensionality Reduction)"
+      ]
+    },
+    {
+      "title": "Module 6.2: Clustering - K-Means",
+      "lessons": [
+        "K-Means Clustering Concepts (Centroids, Iterative process)",
+        "Implementing K-Means with Scikit-learn",
+        "Evaluating Clusters (Elbow Method, Silhouette Score - brief intro)"
+      ]
+    },
+    {
+      "title": "Module 6.3: Introduction to Dimensionality Reduction (Optional/Brief)",
+      "lessons": [
+        "Principal Component Analysis (PCA) Concept (Brief overview of reducing features)"
+      ]
+    },
+    {
+      "title": "Module 7.1: Beyond the Basics",
+      "lessons": [
+        "Exploring Other Algorithms (Ensemble Methods: Random Forests, Gradient Boosting - brief mention)",
+        "Introduction to Deep Learning (When to use, basic concepts)",
+        "Real-World ML Considerations (Ethics in AI, Model Deployment basics)"
+      ]
+    },
+    {
+      "title": "Module 7.2: Resources for Continued Learning",
+      "lessons": [
+        "Recommended Books, Online Courses, and Communities",
+        "Practical Projects and Kaggle Competitions"
+      ]
+    }
+  ]
+}
+```
