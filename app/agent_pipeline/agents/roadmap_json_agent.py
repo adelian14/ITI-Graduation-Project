@@ -47,6 +47,6 @@ def roadmap_to_json_task(raw_roadmap_text):
         """,
         expected_output="Only a clean JSON object representing the course roadmap.",
         agent=RoadmapToJsonAgent().get(),
-        output_file="app/agent_pipeline/data/outputs/roadmap_json_output.json"
+        output_file="app/agent_pipeline/data/outputs/roadmap_json_output.txt"
     )
 

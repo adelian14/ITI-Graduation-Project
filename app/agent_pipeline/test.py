@@ -13,7 +13,7 @@ crew.kickoff()
 
 
 # Read and clean the raw output
-with open("app/agent_pipeline/data/outputs/roadmap_json_output.json", "r", encoding="utf-8") as f:
+with open("app/agent_pipeline/data/outputs/roadmap_json_output.txt", "r", encoding="utf-8") as f:
     raw_output = f.read()
 
 try:
