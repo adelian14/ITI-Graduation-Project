@@ -41,7 +41,7 @@ This project transforms static PDF educational content into structured, interact
 
 | Component        | Tool Used                                   | Why Chosen                                                                   |
 | ---------------- | ------------------------------------------- | ---------------------------------------------------------------------------- |
-| OCR              | `Tesseract` or similar                      | High accuracy and open-source                                                |
+| OCR              | `LLM'                                       | High accuracy and open-source                                                |
 | LLM              | `Gemini-2.5-Flash`                          | Fast, efficient, suitable for real-time tasks                                |
 | Embedding Model  | `BAAI/bge-base-en-v1.5`                     | Optimized for semantic search, high performance on sentence-level embeddings |
 | Vector DB        | `Qdrant`                                    | Scalable, fast similarity search, supports filtering, production-ready       |
