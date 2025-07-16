@@ -34,6 +34,10 @@ class TopicItem:
         raw_topic = {"title":self.title, "content": self.rawTopic}
         return raw_topic
     
+    def get_summary(self):
+        raw_topic = {"title":self.title, "summary": self.rawTopic if self.rawTopic else ""}
+        return raw_topic
+    
     def get_all_topics(self):
         sorted(self.versions, key = lambda t : t.generatedAt, reverse= True)
         return self.versions  

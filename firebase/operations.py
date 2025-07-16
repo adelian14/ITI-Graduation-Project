@@ -172,6 +172,6 @@ def get_generated_version(project_id,version_id):
             if version.id == version_id:
                 return version
     for topic in topics:
-        for version in topic.version:
+        for version in topic.versions:
             if version.id == version_id:
                 return version

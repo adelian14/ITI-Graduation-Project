@@ -18,7 +18,7 @@ def lesson_generation(lesson: Lesson, setting: LessonSetting) -> LessonVersion:
         parent_id=lesson.id
     )
     
-    context_dict = {"lesson_data": lesson.get_raw_lesson(), "setting": version.lessonSetting.to_dict()}
+    context_dict = {"data": lesson.get_raw_lesson(), "setting": version.lessonSetting.to_dict()}
     crew = build_lesson_generation_crew(context_dict)
     try:
         result = crew.kickoff()
@@ -37,7 +37,16 @@ def topic_generation(topic: TopicItem, setting: LessonSetting) -> Topic:
         parent_id=topic.id
     )
     
-    context_dict = {"topic_title": topic.title, "topic_content": topic.get_raw_topic(), "setting": version.lessonSetting.to_dict()}
+    context_dict = {"data": topic.get_summary(), "setting": version.lessonSetting.to_dict()}
+    crew = build_lesson_generation_crew(context_dict)
+    try:
+        result = crew.kickoff()
+        version.rawTopic = str(result)
+        print(version.rawTopic)
+        return version
+    
+    except Exception as e:
+        return None
     
 def generate_course(course: Course):
     context = course.get_context()

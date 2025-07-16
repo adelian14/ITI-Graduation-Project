@@ -41,7 +41,7 @@ class Lesson(CurriculumNode):
         )
 
     def get_raw_lesson(self):
-        raw_lesson = {"lesson_title": self.title, "lesson_description": self.description, "covered_topics": []}
+        raw_lesson = {"title": self.title, "summary": self.description, "covered_topics": []}
         for topic in self.children:
             raw_lesson["covered_topics"].append({"title": topic.title, "content": topic.rawTopic if topic.rawTopic else ""})
         return raw_lesson

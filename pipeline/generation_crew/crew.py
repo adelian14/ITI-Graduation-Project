@@ -23,29 +23,32 @@ lesson_writer_agent = Agent(
 )
 
 def create_lesson_generation_task(full_context: dict) -> Task:
-    lesson_data = full_context["lesson_data"]
+    lesson_data = full_context["data"]
     setting = full_context["setting"]
     
-    title = lesson_data["lesson_title"]
-    description = lesson_data["lesson_description"]
-    topics = lesson_data["covered_topics"]
+    title = lesson_data["title"]
+    summary = f"Lesson Brief Summary (description): {lesson_data['summary']}\n\n"
+    topics = lesson_data.get("covered_topics",None)
 
     setting_str = (
         f"Audience: {setting['ageGroup']}, "
         f"Experience Level: {setting['experienceLevel']}, "
         f"Language: {setting['narrativeLanguage']}"
     )
-
-    topics_str = "\n\n".join(
-        f"{i+1}. {topic['title']}\n{topic['content']}" for i, topic in enumerate(topics)
-    )
+    if topics:
+        topics_str = "\n\n".join(
+            f"{i+1}. {topic['title']}\n{topic['content']}" for i, topic in enumerate(topics)
+        )
+        topics_str = f"Topics:\n{topics_str}\n\n"
+    else:
+        topics_str = ""
 
     full_prompt = (
         f"You are generating a structured, objective lesson based on the following inputs.\n\n"
         f"Lesson Title: {title}\n"
-        f"Lesson Description: {description}\n\n"
+        f"{summary}"
         f"{setting_str}\n\n"
-        f"Topics:\n{topics_str}\n\n"
+        f"{topics_str}"
         f"Write a complete lesson that:\n"
         f"- Starts with an introduction.\n"
         f"- Has a separate section for each topic.\n"
