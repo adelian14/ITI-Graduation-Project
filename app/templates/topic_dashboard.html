@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+        <!-- Topic Title and Description -->
+        <h2 class="mb-0">{{ topic.title }}</h2>
+        {% if topic.description %}
+        <p class="text-muted">{{ topic.description }}</p>
+        {% endif %}
+
+        <hr>
+
+        <!-- Raw Content Section -->
+        <h4>📝 Topic Content</h4>
+        {% if topic.rawTopic %}
+        <div class="card mt-3 shadow-sm">
+            <div class="card-body">
+                <pre class="mb-0" style="white-space: pre-wrap;">{{ topic.rawTopic }}</pre>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-muted">No content available for this topic.</p>
+        {% endif %}
+        <hr class="mt-5">
+
+        <!-- Generated Topic Versions -->
+        <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+            <h4>📘 Generated Topic Versions</h4>
+            <form method="GET"
+                action="/projects/{{ project.id }}/topics/{{ topic.id }}/generate">
+                <button type="submit" class="btn btn-danger btn-sm">Generate New Version</button>
+            </form>
+        </div>
+
+        <div class="row">
+            {% for version in topic.get_all_topics() %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 shadow-sm border border-light">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ version.title }}</h5>
+                        <p class="card-subtitle mb-2 text-muted">Level: {{ version.topicSetting.experienceLevel }}</p>
+                        <p class="card-text"><small>Generated on {{ version.generatedAt.strftime('%Y-%m-%d %H:%M')
+                                }}</small></p>
+                        <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}"
+                            class="btn btn-outline-danger btn-sm">View</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+{% endblock %}

@@ -1,0 +1,68 @@
+from crewai import Agent
+from crewai import Crew
+from crewai import Task
+from pipeline.llm_models.config import gemini_model
+
+lesson_writer_agent = Agent(
+    role="Lesson Writer",
+    goal="Write a complete, objective educational lesson based on the given topics and metadata.",
+    backstory=(
+        "You're a curriculum content writer. You take structured lesson data including title, description, and topics, "
+        "and write a cohesive, logically ordered, and objective lesson. You tailor your output based on the audience's experience level and age group."
+    ),
+    verbose=True,
+    llm = gemini_model()
+)
+
+def create_lesson_generation_task(full_context: dict) -> Task:
+    lesson_data = full_context["lesson_data"]
+    setting = full_context["setting"]
+    
+    title = lesson_data["lesson_title"]
+    description = lesson_data["lesson_description"]
+    topics = lesson_data["covered_topics"]
+
+    setting_str = (
+        f"Audience: {setting['ageGroup']}, "
+        f"Experience Level: {setting['experienceLevel']}, "
+        f"Language: {setting['narrativeLanguage']}"
+    )
+
+    topics_str = "\n\n".join(
+        f"{i+1}. {topic['title']}\n{topic['content']}" for i, topic in enumerate(topics)
+    )
+
+    full_prompt = (
+        f"You are generating a structured, objective lesson based on the following inputs.\n\n"
+        f"Lesson Title: {title}\n"
+        f"Lesson Description: {description}\n\n"
+        f"{setting_str}\n\n"
+        f"Topics:\n{topics_str}\n\n"
+        f"Write a complete lesson that:\n"
+        f"- Starts with an introduction.\n"
+        f"- Has a separate section for each topic.\n"
+        f"- Uses clear, informative, and objective language.\n"
+        f"- Ends with a summary or conclusion.\n"
+        f"Return only the final lesson text."
+    )
+
+    # Return the task
+    return Task(
+        description=full_prompt,
+        expected_output="A complete lesson text written in raw, structured, objective form.",
+        agent=lesson_writer_agent
+    )
+
+
+def build_lesson_generation_crew(lesson_object: dict) -> Crew:
+    lesson_task = create_lesson_generation_task(lesson_object)
+
+    crew = Crew(
+        agents=[lesson_writer_agent],
+        tasks=[lesson_task],
+        verbose=True
+    )
+
+    return crew
+
+

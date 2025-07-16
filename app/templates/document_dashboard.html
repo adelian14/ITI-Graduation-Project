@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+
+        <!-- Header -->
+        <h2 class="mb-1">{{ doc.name }}.{{ doc.extension }}</h2>
+        <p class="text-muted mb-4">Uploaded on {{ doc.uploadedAt.strftime('%Y-%m-%d %H:%M') }}</p>
+        <hr>
+
+        <h4 class="mb-3">Parsed Content</h4>
+
+        {% if doc.parsedContent %}
+        <div class="mb-4">
+            <h5 class="fw-semibold">{{ doc.parsedContent.title }}</h5>
+            <p class="text-muted">{{ doc.parsedContent.description }}</p>
+        </div>
+
+        {% for module in doc.parsedContent.children %}
+        <div class="section-block">
+            <!-- Module Header -->
+            <div class="module-header clickable" data-bs-toggle="collapse" data-bs-target="#module{{ module.id }}">
+                {{ module.title }}
+            </div>
+
+            <!-- Module Content -->
+            <div id="module{{ module.id }}" class="collapse mt-3">
+                <p class="text-muted">{{ module.description }}</p>
+
+                {% for lesson in module.children %}
+                <div class="section-block">
+                    <!-- Lesson Header -->
+                    <div class="lesson-title clickable d-flex justify-content-between align-items-center"
+                        data-bs-toggle="collapse" data-bs-target="#lesson{{ lesson.id }}">
+                        <span>{{ lesson.title }}</span>
+                    </div>
+
+                    <!-- Lesson Content -->
+                    <div id="lesson{{ lesson.id }}" class="collapse mt-2">
+                        <p class="text-muted">{{ lesson.description }}</p>
+                        <a href="/projects/{{ project.id }}/lessons/{{ lesson.id }}"
+                            class="btn btn-sm select-btn mb-2">Select Lesson</a>
+
+                        <ul class="list-group list-group-flush mt-2">
+                            {% for topic in lesson.children %}
+                            <li class="list-group-item">
+                                <a href="/projects/{{ project.id }}/topics/{{ topic.id }}">
+                                    {{ topic.title }}: {{ topic.description }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+
+        {% elif doc.error %}
+        <p class="text-danger">Error: {{ doc.error }}</p>
+        {% else %}
+        <p class="text-muted">No content parsed yet.</p>
+        {% endif %}
+        <hr class="my-5">
+        <h4 class="mb-4">📘 Generated Material for Lessons</h4>
+
+        <div class="row">
+            {% for version in doc.parsedContent.get_all_lessons()%}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 shadow-sm border border-light">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ version.title }}</h5>
+                        <p class="card-subtitle mb-2 text-muted">Level: {{ version.lessonSetting.experienceLevel }}</p>
+                        <p class="card-text"><small>Generated on {{ version.generatedAt.strftime('%Y-%m-%d %H:%M')
+                                }}</small></p>
+                        <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}"
+                            class="btn btn-outline-danger btn-sm">View Lesson</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <hr class="my-5">
+        <h4 class="mb-4">📒 Generated Material for Topics</h4>
+
+        <div class="row">
+            {% for version in doc.parsedContent.get_all_topics() %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 shadow-sm border border-light">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ version.title }}</h5>
+                        <p class="card-subtitle mb-2 text-muted">Level: {{ version.lessonSetting.experienceLevel }}</p>
+                        <p class="card-text"><small>Generated on {{ version.generatedAt.strftime('%Y-%m-%d %H:%M')
+                                }}</small></p>
+                        <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}"
+                            class="btn btn-outline-danger btn-sm">View Topic</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+{% endblock %}

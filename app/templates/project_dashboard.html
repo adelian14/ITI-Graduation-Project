@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <!-- Project Info -->
+    <div class="mb-5">
+      <h2 class="text-danger">{{ project.title }}</h2>
+      <p class="lead text-muted">{{ project.description }}</p>
+      <p class="text-secondary">Created at: {{ project.createdAt.strftime('%B %d, %Y') }}</p>
+    </div>
+
+    <!-- File Upload Section -->
+    <div class="mb-5">
+      <h4 class="text-danger mb-3">Upload a File</h4>
+      <form method="POST" action="/projects/{{ project.id }}/upload" enctype="multipart/form-data">
+        <div class="input-group">
+          <input type="file" class="form-control" name="file" required>
+          <button type="submit" class="btn btn-red">Upload</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Uploaded Files -->
+    <div class="mb-5">
+      <h4 class="text-danger mb-3">My Files</h4>
+
+      {% if project.documents %}
+      <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for doc in project.documents %}
+        {% include 'components/document_card.html' %}
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-muted">No files uploaded yet.</p>
+      {% endif %}
+    </div>
+
+    <div class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="text-danger mb-0">Courses</h4>
+        <a href="/projects/{{ project.id }}/courses/create" class="btn btn-red">
+          <i class="fas fa-plus me-1"></i> Create Course
+        </a>
+      </div>
+
+      {% if project.courses %}
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th class="text-center">Modules</th>
+              <th class="text-center">Level</th>
+              <th class="text-center">Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for course in project.courses %}
+            {% include 'components/course_row.html' %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-muted">No courses created yet.</p>
+      {% endif %}
+    </div>
+
+{% endblock %}

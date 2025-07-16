@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2 class="text-center text-danger mb-4">Create New Project</h2>
+
+    <form method="POST" action="/create" class="mx-auto" style="max-width: 600px;">
+      <div class="mb-3">
+        <label for="title" class="form-label">Project Title</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="description" class="form-label">Project Description</label>
+        <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+      </div>
+
+      <div class="text-end">
+        <button type="submit" class="btn btn-red">Create</button>
+      </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+        <h2 class="mb-4">Customize for your target audience</h2>
+        <form method="POST" action="{{ form_action }}">
+
+            <!-- General Customization -->
+            <h5>General customization:</h5>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Age Group</label>
+                    <select name="age_group" class="form-select">
+                        {% for k, v in age_groups.items() %}
+                        <option value="{{ k }}" {% if k==default_age %}selected{% endif %}>{{ v }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Experience Level</label>
+                    <select name="experience_level" class="form-select">
+                        {% for k, v in experience_levels.items() %}
+                        <option value="{{ k }}" {% if k==default_experience %}selected{% endif %}>{{ v }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- Explanatory Style -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Explanatory Style</label>
+                <select name="explanatory_style" class="form-select">
+                    {% for k, v in explanatory_styles.items() %}
+                    <option value="{{ k }}" {% if k==default_explanatory_style %}selected{% endif %}>{{ v }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <hr>
+
+            <!-- Narrative Customization -->
+            <h5 class="mt-4">Narrative customization:</h5>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Narrative Language</label>
+                    <select name="language" class="form-select">
+                        {% for k, v in languages.items() %}
+                        <option value="{{ k }}" {% if k==default_language %}selected{% endif %}>{{ v }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Teaching Tone</label>
+                    <select name="teaching_tone" class="form-select">
+                        {% for k, v in teaching_tones.items() %}
+                        <option value="{{ k }}" {% if k==default_tone %}selected{% endif %}>{{ v }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- Inside the <form> -->
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-danger px-5">Generate Material</button>
+            </div>
+
+        </form>
+{% endblock %}

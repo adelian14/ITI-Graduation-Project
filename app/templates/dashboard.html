@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container py-5">
+    <h2 class="text-center text-danger mb-4">My Projects</h2>
+
+    {% if projects %}
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for project in projects %}
+          {% include 'components/project_card.html' %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-muted fs-4">You have no projects yet.</p>
+    {% endif %}
+  </div>
+
+  <a href="/create" class="btn-fab">+</a>
+{% endblock %}
