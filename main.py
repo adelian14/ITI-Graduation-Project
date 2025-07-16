@@ -11,11 +11,15 @@ from app.routes.lesson_dashboard import lessonDashboard_bp
 from app.routes.topic_dashboard import topicDashboard_bp
 from app.routes.generate_route import generateRoute_bp
 from app.routes.course_dashboard import courseDashboard_bp
+from app.routes.gen_material import genMaterial_bp
 from dotenv import load_dotenv
+from markdown import markdown
 
 load_dotenv()
 
 app = Flask(__name__, template_folder='app/templates')
+app.jinja_env.filters['markdown'] = lambda text: markdown(text or "")
+
 app.secret_key = "SECRET_KEY"
 app.register_blueprint(homepage_bp)
 app.register_blueprint(dashboard_bp)
@@ -29,6 +33,7 @@ app.register_blueprint(courseDashboard_bp)
 app.register_blueprint(lessonDashboard_bp)
 app.register_blueprint(topicDashboard_bp)
 app.register_blueprint(generateRoute_bp)
+app.register_blueprint(genMaterial_bp)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-3 text-danger">{{ version.title }}</h2>
+    <p class="text-muted mb-3">Generated At: {{ version.generatedAt.strftime('%Y-%m-%d %H:%M') }}</p>
+
+    <div class="card shadow-sm border-light mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3">📚 Lesson Settings</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Language:</strong> {{ version.lessonSetting.narrativeLanguage }}
+                </li>
+                <li class="list-group-item"><strong>Explanatory Style:</strong> {{
+                    version.lessonSetting.explanatoryStyle }}</li>
+                <li class="list-group-item"><strong>Teaching Tone:</strong> {{ version.lessonSetting.teachingTone }}
+                </li>
+                <li class="list-group-item"><strong>Age Group:</strong> {{ version.lessonSetting.ageGroup }}</li>
+                <li class="list-group-item"><strong>Experience Level:</strong> {{ version.lessonSetting.experienceLevel
+                    }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row">
+        <!-- Raw Content Panel -->
+        <div class="col-md-12 mb-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-body">
+                    <h5 class="card-title">📝 Raw Content</h5>
+                    <div class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">
+                        {{ (version.rawLesson or version.rawTopic).replace('\n', '\n')  | markdown | safe}}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Actions -->
+    <div class="d-flex justify-content-end gap-3 mt-4">
+        {% if version.slides %}
+        <a href="{{ url_for('download_file_route', project_id=project_id, version_id=version.id, file_type='slides') }}"
+            class="btn btn-outline-danger btn-sm">
+            ⬇️ Download Slides
+        </a>
+        {% endif %}
+
+        {% if version.narrative %}
+        <a href="{{ url_for('download_file_route', project_id=project_id, version_id=version.id, file_type='narrative') }}"
+            class="btn btn-outline-primary btn-sm">
+            ⬇️ Download Narrative
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

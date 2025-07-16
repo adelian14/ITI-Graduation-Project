@@ -122,4 +122,56 @@ def save_topic_version(project_id, topic_id, new_version: Topic):
                         topic.versions.append(new_version)
                         save_project(project)
                         return
-    
+
+def get_all_lessons(project_id):
+    project = get_project_by_id(project_id)
+    all_lessons = []
+
+    def collect_lessons_from_content(content):
+        if not content:
+            return
+        for module in content.children:
+            for lesson in module.children:
+                all_lessons.append(lesson)
+
+    for doc in project.documents:
+        collect_lessons_from_content(doc.parsedContent)
+
+    for course in project.courses:
+        collect_lessons_from_content(course.content)
+
+    return all_lessons
+
+def get_all_topics(project_id):
+    project = get_project_by_id(project_id)
+    all_topics = []
+
+    def collect_topics_from_content(content):
+        if not content:
+            return
+        for module in content.children:
+            for lesson in module.children:
+                for topic in lesson.children:
+                    all_topics.append(topic)
+
+    for doc in project.documents:
+        collect_topics_from_content(doc.parsedContent)
+        
+        
+    for course in project.courses:
+        collect_topics_from_content(course.content)
+
+    return all_topics
+
+
+def get_generated_version(project_id,version_id):
+    lessons = get_all_lessons(project_id)
+    topics = get_all_topics(project_id)
+    for lesson in lessons:
+        for version in lesson.versions:
+            if version.id == version_id:
+                return version
+    for topic in topics:
+        for version in topic.version:
+            if version.id == version_id:
+                return version
