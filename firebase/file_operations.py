@@ -5,6 +5,7 @@ import uuid
 from models.DocumentObject import DocumentObject
 from firebase.config import TEMP_DIR
 import shutil
+from datetime import timedelta
 
 def save_file(file, project_id):
     print(TEMP_DIR)
@@ -20,6 +21,28 @@ def save_file(file, project_id):
     blob.upload_from_file(file, content_type=file.content_type)
     
     return name, ext, file_id
+
+def upload_pptx_to_firebase(local_path: str, project_id: str) -> str:
+    filename = os.path.basename(local_path)
+    name, ext = os.path.splitext(filename)
+    ext = ext.lstrip(".")
+    file_id = str(uuid.uuid4())
+
+    storage_filename = f"{name}_{file_id}.{ext}"
+    storage_path = f"projects/{project_id}/{storage_filename}"
+    print(storage_path)
+    blob = bucket.blob(storage_path)
+    print(storage_path)
+    blob.upload_from_filename(local_path, content_type="application/vnd.openxmlformats-officedocument.presentationml.presentation")
+
+    return storage_path
+
+def get_download_link(storage_path: str, expires_in_minutes: int = 15) -> str:
+    blob = bucket.blob(storage_path)
+    url = blob.generate_signed_url(expiration=timedelta(minutes=expires_in_minutes))
+    return url
+
+
 
 
 def download_file_to_temp(storage_path: str, extension="pdf") -> str:
@@ -64,5 +87,3 @@ def clear_temp_folder():
                 shutil.rmtree(file_path)  # remove directory and its contents
         except Exception as e:
             print(f"Failed to delete {file_path}. Reason: {e}")
-
-

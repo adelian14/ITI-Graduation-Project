@@ -13,6 +13,7 @@ from firebase.operations import (
     save_topic_version
 )
 from pipeline.generation import lesson_generation, topic_generation, full_generation
+from firebase.file_operations import upload_pptx_to_firebase, get_download_link
 
 
 generateRoute_bp = Blueprint("generate_route",__name__,url_prefix="/projects/<project_id>")
@@ -65,6 +66,8 @@ def generate_lesson_material(project_id, lesson_id):
     
     if version:
         full_generation(version)
+        path = upload_pptx_to_firebase(version.slides, project_id)
+        version.slides = get_download_link(path)
         save_lesson_version(project_id, lesson_id, version)
 
     return redirect(f"/projects/{project_id}/lessons/{lesson_id}")
@@ -86,6 +89,8 @@ def generate_topic_material(project_id, topic_id):
     
     if version:
         full_generation(version)
+        path = upload_pptx_to_firebase(version.slides, project_id)
+        version.slides = get_download_link(path)
         save_topic_version(project_id, topic_id, version)
 
     return redirect(f"/projects/{project_id}/topics/{topic_id}")

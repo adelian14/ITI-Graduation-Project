@@ -31,7 +31,7 @@
                 <div class="card-body">
                     <h5 class="card-title">📝 Raw Content</h5>
                     <div class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">
-                        {{ (version.rawLesson or version.rawTopic).replace('\n', '\n')  | markdown | safe}}
+                        {{ (version.rawLesson or version.rawTopic).replace('\n', '\n') | markdown | safe}}
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                 <div class="card-body">
                     <h5 class="card-title">📝 Narrative</h5>
                     <div class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">
-                        {{ (version.narrative).replace('\n', '\n')  | markdown | safe}}
+                        {{ (version.narrative).replace('\n', '\n') | markdown | safe}}
                     </div>
 
                 </div>
@@ -63,7 +63,7 @@
                 <div class="card-body">
                     <h5 class="card-title">📝 Video Script</h5>
                     <div class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">
-                        {{ (version.videoScript).replace('\n', '\n')  | markdown | safe}}
+                        {{ (version.videoScript).replace('\n', '\n') | markdown | safe}}
                     </div>
 
                 </div>
@@ -71,6 +71,16 @@
         </div>
     </div>
     {% endif %}
-
+    {% if version.slides %}
+    <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+        <div class="card-body text-center">
+            <h5 class="card-title mb-3">Your presentation is ready!</h5>
+            <p class="card-text text-muted">Click the button below to download your slides.</p>
+            <a href="{{ version.slides }}" class="btn btn-danger w-100" download>
+                <i class="bi bi-download me-2"></i>Download Slides
+            </a>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

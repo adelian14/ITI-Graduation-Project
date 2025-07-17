@@ -11,6 +11,8 @@ from uuid import uuid4
 from pipeline.generation_crew.crew import build_lesson_generation_crew
 from pipeline.roadmap_generation_crew.roadmap_generation import generate_roadmap
 from pipeline.Narrative_generation_crew.crew import NarrativeGenerationCrew
+from pipeline.slides_generation_crew.crew import SlidesGenerationCrew
+from pipeline.slides_generation_crew.convert_json_to_pptx import convert_json_to_pptx
 
 def lesson_generation(lesson: Lesson, setting: LessonSetting) -> LessonVersion:
     version = LessonVersion(
@@ -61,13 +63,19 @@ def generate_course(course: Course):
 
 def full_generation(lesson: LessonVersion | Topic):
     lesson_string = lesson.rawLesson or lesson.rawTopic
-    setting = lesson.lessonSetting
-    learner = LearnerProfile()
-    learner.age = setting.ageGroup
-    learner.experience = setting.experienceLevel
-    learner.style = setting.explanatoryStyle
-    learner.tone = setting.teachingTone
-    crew = NarrativeGenerationCrew()
-    outputs = crew.run(lesson_string, learner)
-    lesson.narrative = crew.get_agent_output('Audience Personalization & Learning Experience Designer',outputs)
-    lesson.videoScript = crew.get_agent_output('Markdown Documentation Specialist', outputs)
+    #setting = lesson.lessonSetting
+    #learner = LearnerProfile()
+    #learner.age = setting.ageGroup
+    #learner.experience = setting.experienceLevel
+    #learner.style = setting.explanatoryStyle
+    #learner.tone = setting.teachingTone
+    #crew = NarrativeGenerationCrew()
+    #outputs = crew.run(lesson_string, learner)
+    #lesson.narrative = crew.get_agent_output('Audience Personalization & Learning Experience Designer',outputs)
+    #lesson.videoScript = crew.get_agent_output('Markdown Documentation Specialist', outputs)
+    
+    slides_crew = SlidesGenerationCrew()
+    result = slides_crew.run(lesson_string)
+    presentation_path = convert_json_to_pptx(result)
+    lesson.slides = presentation_path
+    

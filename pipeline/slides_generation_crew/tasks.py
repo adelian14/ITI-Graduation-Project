@@ -2,7 +2,7 @@ from crewai import Task
 from datetime import datetime
 
 class SlidesGenerationTasks:
-    def summarize_task(agent, data) -> Task:
+    def summarize_task(self, agent, data) -> Task:
         """Create an enhanced content summarization task"""
         return Task(
             description=f"""
@@ -61,7 +61,7 @@ class SlidesGenerationTasks:
             )
         )
 
-    def design_task(agent) -> Task:
+    def design_task(self, agent) -> Task:
         """Create an enhanced slide structure design task"""
         return Task(
             description="""
@@ -124,7 +124,7 @@ class SlidesGenerationTasks:
             )
         )
 
-    def json_task(agent) -> Task:
+    def json_task(self, agent) -> Task:
         """Create an enhanced JSON structure creation task with static template"""
         return Task(
             description="""

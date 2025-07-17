@@ -6,6 +6,8 @@ from pptx.dml.color import RGBColor
 from pptx.enum.dml import MSO_THEME_COLOR
 import re
 from datetime import datetime
+from firebase.config import TEMP_DIR
+import os
 
 # Enhanced static theme styling - colors are now hardcoded in the function
 THEME_COLORS = {
@@ -428,7 +430,7 @@ def create_enhanced_title_slide(prs, data):
 
     return slide
 
-def create_presentation_from_json(data, output_path="output.pptx"):
+def create_presentation_from_json(data):
     """Create an enhanced PowerPoint presentation from JSON data."""
     prs = Presentation()
     prs.slide_width = Inches(13.33)
@@ -474,10 +476,12 @@ def create_presentation_from_json(data, output_path="output.pptx"):
         add_slide_number(slide, prs, idx)
 
     # Save presentation
-    prs.save(output_path)
-    print(f"Enhanced presentation saved to {output_path}")
+    prs_path = os.path.join(TEMP_DIR, f'presentation.pptx')
+    prs.save(prs_path)
+    print(f"Enhanced presentation saved to {prs_path}")
+    return prs_path
 
 
 def convert_json_to_pptx(result_json):
     cleaned_json_content = str(result_json).strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
-    create_presentation_from_json(json.loads(cleaned_json_content), "output.pptx")
+    return create_presentation_from_json(json.loads(cleaned_json_content))

@@ -5,13 +5,13 @@ from pipeline.llm_models.config import gemini_model
 
 llm = gemini_model()
 
-class NarrativeGenerationCrew:
+class SlidesGenerationCrew:
     def __init__(self):
         self.agents = SlidesGenerationAgents()
         self.tasks = SlidesGenerationTasks()
 
     
-    def create_crew(self, data):
+    def create_crew(self, data) -> Crew:
         # Initialize all agents
         summarizer_agent = self.agents.summarizer_agent(llm)
         slide_designer_agent = self.agents.slide_designer_agent(llm)
@@ -32,8 +32,9 @@ class NarrativeGenerationCrew:
         )
     
     def run(self, data):
-        crew = self.create_crew(llm, data)
-        result_json = crew.kickoff()
+        crew = self.create_crew(data)
+        result_json = crew.kickoff().raw
+        return result_json
 
 
 

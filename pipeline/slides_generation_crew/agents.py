@@ -3,7 +3,7 @@ from pipeline.llm_models.config import gemini_model
 
 class SlidesGenerationAgents:      
         
-    def summarizer_agent(llm) -> Agent:
+    def summarizer_agent(self, llm) -> Agent:
         """Create an enhanced content summarizer agent"""
         return Agent(
             role='Expert Content Summarizer and Educational Analyst',
@@ -26,7 +26,7 @@ class SlidesGenerationAgents:
             memory=True
         )
 
-    def slide_designer_agent(llm) -> Agent:
+    def slide_designer_agent(self, llm) -> Agent:
         """Create an enhanced slide structure designer agent"""
         return Agent(
             role='Master Presentation Designer and Learning Experience Architect',
@@ -49,7 +49,7 @@ class SlidesGenerationAgents:
             memory=True
         )
 
-    def json_creator_agent(llm) -> Agent:
+    def json_creator_agent(self, llm) -> Agent:
         """Create an enhanced JSON structure creator agent"""
         return Agent(
             role='Senior Technical Documentation Architect and Data Structure Specialist',

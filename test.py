@@ -3,7 +3,7 @@ from models.Course import Course
 from models.DocumentObject import DocumentObject
 from firebase.config import db
 from firebase.operations import get_all_projects, get_project_metadata
-
+from firebase.file_operations import upload_pptx_to_firebase, get_download_link
 from utils.json_utils import id_json
 import pprint
 d = """{
@@ -300,4 +300,11 @@ d = """{
   ]
 }"""
 
-pprint.pprint(id_json("this_id_25656",d))
+prj_id = '54de001b-e07e-4a2c-9931-85d2a958bce1'
+path = 'H:\\notebooks\Graduation project\\finaaal\ITI-Graduation-Project\\temp\presentation.pptx'
+
+outpath = upload_pptx_to_firebase(path,prj_id)
+print('='*50)
+print(outpath)
+
+#pprint.pprint(id_json("this_id_25656",d))
