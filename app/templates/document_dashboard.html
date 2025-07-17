@@ -1,102 +1,217 @@
 {% extends 'base.html' %}
 {% block content %}
 
-        <!-- Header -->
-        <h2 class="mb-1">{{ doc.name }}.{{ doc.extension }}</h2>
-        <p class="text-muted mb-4">Uploaded on {{ doc.uploadedAt.strftime('%Y-%m-%d %H:%M') }}</p>
-        <hr>
+<div class="container-fluid py-4">
+    <!-- Document Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">
+                <i class="fas fa-file-{{ 'word' if doc.extension == 'docx' else 'pdf' }} me-2 text-primary"></i>
+                {{ doc.name }}.{{ doc.extension }}
+            </h2>
+            <p class="text-muted mb-0">
+                <i class="far fa-calendar-alt me-1"></i>
+                Uploaded {{ doc.uploadedAt.strftime('%b %d, %Y at %H:%M') }}
+            </p>
+        </div>
+        <div>
+            <span class="badge bg-secondary">{{ doc.extension|upper }}</span>
+        </div>
+    </div>
 
-        <h4 class="mb-3">Parsed Content</h4>
+    <hr class="my-4">
+
+    <!-- Parsed Content Section -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-file-alt me-3 text-danger"></i>
+            <h4 class="mb-0">Parsed Content</h4>
+        </div>
 
         {% if doc.parsedContent %}
-        <div class="mb-4">
-            <h5 class="fw-semibold">{{ doc.parsedContent.title }}</h5>
-            <p class="text-muted">{{ doc.parsedContent.description }}</p>
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title fw-bold">{{ doc.parsedContent.title }}</h5>
+                <p class="card-text text-muted">{{ doc.parsedContent.description }}</p>
+            </div>
         </div>
 
-        {% for module in doc.parsedContent.children %}
-        <div class="section-block">
-            <!-- Module Header -->
-            <div class="module-header clickable" data-bs-toggle="collapse" data-bs-target="#module{{ module.id }}">
-                {{ module.title }}
-            </div>
+        <div class="accordion" id="contentAccordion">
+            {% for module in doc.parsedContent.children %}
+            <div class="accordion-item border-0 mb-3 shadow-sm rounded-3">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed bg-light" type="button" 
+                            data-bs-toggle="collapse" data-bs-target="#module{{ module.id }}">
+                        <i class="fas fa-book me-2 text-warning"></i>
+                        <strong>{{ module.title }}</strong>
+                    </button>
+                </h2>
+                <div id="module{{ module.id }}" class="accordion-collapse collapse" 
+                     data-bs-parent="#contentAccordion">
+                    <div class="accordion-body pt-0">
+                        <p class="text-muted mb-3">{{ module.description }}</p>
+                        
+                        <div class="accordion" id="lessonAccordion{{ module.id }}">
+                            {% for lesson in module.children %}
+                            <div class="accordion-item border-0 mb-2 rounded-2">
+                                <h3 class="accordion-header">
+                                    <button class="accordion-button collapsed py-2" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#lesson{{ lesson.id }}">
+                                        <i class="fas fa-file-alt me-2 text-info"></i>
+                                        {{ lesson.title }}
+                                    </button>
+                                </h3>
+                                <div id="lesson{{ lesson.id }}" class="accordion-collapse collapse" 
+                                     data-bs-parent="#lessonAccordion{{ module.id }}">
+                                    <div class="accordion-body">
+                                        <p class="text-muted mb-3">{{ lesson.description }}</p>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <a href="/projects/{{ project.id }}/lessons/{{ lesson.id }}"
+                                                class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye me-1"></i> View Lesson
+                                            </a>
+                                            <span class="badge bg-light text-dark">
+                                                {{ lesson.children|length }} topics
+                                            </span>
+                                        </div>
 
-            <!-- Module Content -->
-            <div id="module{{ module.id }}" class="collapse mt-3">
-                <p class="text-muted">{{ module.description }}</p>
-
-                {% for lesson in module.children %}
-                <div class="section-block">
-                    <!-- Lesson Header -->
-                    <div class="lesson-title clickable d-flex justify-content-between align-items-center"
-                        data-bs-toggle="collapse" data-bs-target="#lesson{{ lesson.id }}">
-                        <span>{{ lesson.title }}</span>
-                    </div>
-
-                    <!-- Lesson Content -->
-                    <div id="lesson{{ lesson.id }}" class="collapse mt-2">
-                        <p class="text-muted">{{ lesson.description }}</p>
-                        <a href="/projects/{{ project.id }}/lessons/{{ lesson.id }}"
-                            class="btn btn-sm select-btn mb-2">Select Lesson</a>
-
-                        <ul class="list-group list-group-flush mt-2">
-                            {% for topic in lesson.children %}
-                            <li class="list-group-item">
-                                <a href="/projects/{{ project.id }}/topics/{{ topic.id }}">
-                                    {{ topic.title }}: {{ topic.description }}
-                                </a>
-                            </li>
+                                        <ul class="list-group list-group-flush">
+                                            {% for topic in lesson.children %}
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-0">{{ topic.title }}</h6>
+                                                    <small class="text-muted">{{ topic.description }}</small>
+                                                </div>
+                                                <a href="/projects/{{ project.id }}/topics/{{ topic.id }}" 
+                                                   class="btn btn-sm btn-outline-success">
+                                                    <i class="fas fa-external-link-alt"></i>
+                                                </a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                             {% endfor %}
-                        </ul>
+                        </div>
                     </div>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
 
         {% elif doc.error %}
-        <p class="text-danger">Error: {{ doc.error }}</p>
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>Error:</strong> {{ doc.error }}
+        </div>
         {% else %}
-        <p class="text-muted">No content parsed yet.</p>
+        <div class="text-center py-5 bg-light rounded-3">
+            <i class="fas fa-file-search fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">No Parsed Content Yet</h4>
+            <p class="text-muted">This document hasn't been processed or contains no parsable content.</p>
+            <button class="btn btn-outline-primary">
+                <i class="fas fa-sync me-1"></i> Try Reprocessing
+            </button>
+        </div>
         {% endif %}
-        <hr class="my-5">
-        <h4 class="mb-4">📘 Generated Material for Lessons</h4>
+    </div>
 
-        <div class="row">
-            {% for version in doc.parsedContent.get_all_lessons()%}
-            <div class="col-md-4 mb-3">
-                <div class="card h-100 shadow-sm border border-light">
+    <!-- Generated Lessons Section -->
+    <div class="mb-5">
+        <hr class="my-5">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-book-open me-3 text-danger"></i>
+            <h4 class="mb-0">Generated Material for Lessons</h4>
+        </div>
+
+        {% if doc.parsedContent.get_all_lessons() %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for version in doc.parsedContent.get_all_lessons() %}
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">{{ version.title }}</h5>
+                    </div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ version.title }}</h5>
-                        <p class="card-subtitle mb-2 text-muted">Level: {{ version.lessonSetting.experienceLevel }}</p>
-                        <p class="card-text"><small>Generated on {{ version.generatedAt.strftime('%Y-%m-%d %H:%M')
-                                }}</small></p>
-                        <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}"
-                            class="btn btn-outline-danger btn-sm">View Lesson</a>
+                        <span class="badge bg-info text-dark mb-2">
+                            Level: {{ version.lessonSetting.experienceLevel }}
+                        </span>
+                        <p class="card-text text-muted small">{{ version.description|truncate(100) }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="far fa-clock me-1"></i>
+                                {{ version.generatedAt.strftime('%b %d, %Y') }}
+                            </small>
+                            <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}" 
+                               class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-1"></i> View
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
+        {% else %}
+        <div class="text-center py-4 bg-light rounded-3">
+            <i class="fas fa-book fa-2x text-muted mb-3"></i>
+            <h5 class="text-muted">No Generated Lessons Yet</h5>
+            <p class="text-muted small">Generate lesson materials to see them here</p>
+        </div>
+        {% endif %}
+    </div>
 
+    <!-- Generated Topics Section -->
+    <div class="mb-4">
         <hr class="my-5">
-        <h4 class="mb-4">📒 Generated Material for Topics</h4>
+        <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-sticky-note me-3 text-danger"></i>
+            <h4 class="mb-0">Generated Material for Topics</h4>
+        </div>
 
-        <div class="row">
+        {% if doc.parsedContent.get_all_topics() %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {% for version in doc.parsedContent.get_all_topics() %}
-            <div class="col-md-4 mb-3">
-                <div class="card h-100 shadow-sm border border-light">
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">{{ version.title }}</h5>
+                    </div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ version.title }}</h5>
-                        <p class="card-subtitle mb-2 text-muted">Level: {{ version.lessonSetting.experienceLevel }}</p>
-                        <p class="card-text"><small>Generated on {{ version.generatedAt.strftime('%Y-%m-%d %H:%M')
-                                }}</small></p>
-                        <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}"
-                            class="btn btn-outline-danger btn-sm">View Topic</a>
+                        <span class="badge bg-info text-dark mb-2">
+                            Level: {{ version.lessonSetting.experienceLevel }}
+                        </span>
+                        <p class="card-text text-muted small">{{ version.description|truncate(100) }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="far fa-clock me-1"></i>
+                                {{ version.generatedAt.strftime('%b %d, %Y') }}
+                            </small>
+                            <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}" 
+                               class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-1"></i> View
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
+        {% else %}
+        <div class="text-center py-4 bg-light rounded-3">
+            <i class="fas fa-sticky-note fa-2x text-muted mb-3"></i>
+            <h5 class="text-muted">No Generated Topics Yet</h5>
+            <p class="text-muted small">Generate topic materials to see them here</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+
+
 {% endblock %}

@@ -2,10 +2,14 @@
 
 {% block content %}
 <div class="container py-5">
-    <h2 class="mb-3 text-danger">{{ version.title }}</h2>
-    <p class="text-muted mb-3">Generated At: {{ version.generatedAt.strftime('%Y-%m-%d %H:%M') }}</p>
+    <div class="d-flex justify-content-between align-items-start flex-wrap mb-4">
+        <div>
+            <h2 class="text-danger mb-1">{{ version.title }}</h2>
+            <p class="text-muted mb-0">Generated At: {{ version.generatedAt.strftime('%Y-%m-%d %H:%M') }}</p>
+        </div>
+    </div>
 
-    <div class="card shadow-sm border-light mb-4">
+    <div class="card shadow-sm mb-4 border-light">
         <div class="card-body">
             <h5 class="card-title mb-3">📚 Lesson Settings</h5>
             <ul class="list-group list-group-flush">
@@ -22,63 +26,69 @@
         </div>
     </div>
 
-    <hr class="my-4">
+    <div class="accordion" id="contentAccordion">
 
-    <div class="row">
-        <!-- Raw Content Panel -->
-        <div class="col-md-12 mb-4">
-            <div class="card shadow-sm border-light">
-                <div class="card-body">
-                    <h5 class="card-title">📝 Raw Content</h5>
-                    <div class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">
-                        {{ (version.rawLesson or version.rawTopic).replace('\n', '\n') | markdown | safe}}
-                    </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingRaw">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseRaw">
+                    📝 Raw Content
+                </button>
+            </h2>
+            <div id="collapseRaw" class="accordion-collapse collapse" data-bs-parent="#contentAccordion">
+                <div class="accordion-body collapsible-section bg-light p-3 rounded">
+                    {{ (version.rawLesson or version.rawTopic).replace('\n', '\n') | markdown | safe }}
                 </div>
             </div>
         </div>
-    </div>
 
-    {% if version.narrative %}
-    <div class="row">
-        <!-- Raw Content Panel -->
-        <div class="col-md-12 mb-4">
-            <div class="card shadow-sm border-light">
-                <div class="card-body">
-                    <h5 class="card-title">📝 Narrative</h5>
-                    <div class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">
-                        {{ (version.narrative).replace('\n', '\n') | markdown | safe}}
-                    </div>
-
+        {% if version.narrative %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingNarrative">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseNarrative">
+                    📝 Narrative
+                </button>
+            </h2>
+            <div id="collapseNarrative" class="accordion-collapse collapse" data-bs-parent="#contentAccordion">
+                <div class="accordion-body collapsible-section bg-light p-3 rounded">
+                    {{ version.narrative.replace('\n', '\n') | markdown | safe }}
                 </div>
             </div>
         </div>
-    </div>
-    {% endif %}
+        {% endif %}
 
-    {% if version.videoScript %}
-    <div class="row">
-        <!-- Raw Content Panel -->
-        <div class="col-md-12 mb-4">
-            <div class="card shadow-sm border-light">
-                <div class="card-body">
-                    <h5 class="card-title">📝 Video Script</h5>
-                    <div class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">
-                        {{ (version.videoScript).replace('\n', '\n') | markdown | safe}}
-                    </div>
-
+        {% if version.videoScript %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingScript">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseScript">
+                    📝 Video Script
+                </button>
+            </h2>
+            <div id="collapseScript" class="accordion-collapse collapse" data-bs-parent="#contentAccordion">
+                <div class="accordion-body collapsible-section bg-light p-3 rounded">
+                    {{ version.videoScript.replace('\n', '\n') | markdown | safe }}
                 </div>
             </div>
         </div>
+        {% endif %}
+
+
     </div>
-    {% endif %}
+
     {% if version.slides %}
-    <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
-        <div class="card-body text-center">
-            <h5 class="card-title mb-3">Your presentation is ready!</h5>
-            <p class="card-text text-muted">Click the button below to download your slides.</p>
-            <a href="{{ version.slides }}" class="btn btn-danger w-100" download>
-                <i class="bi bi-download me-2"></i>Download Slides
-            </a>
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card text-center shadow-sm border-light px-4 py-5" style="max-width: 500px; width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title mb-3 text-success">
+                    <i class="bi bi-check-circle me-1"></i> Presentation Ready
+                </h5>
+                <p class="card-text text-muted mb-4">Download your generated slides below.</p>
+                <a href="{{ version.slides }}" class="btn btn-danger btn-lg fw-bold shadow-sm px-4" download>
+                    <i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download Slides
+                </a>
+            </div>
         </div>
     </div>
     {% endif %}

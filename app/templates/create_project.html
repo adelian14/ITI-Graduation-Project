@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2 class="text-center text-danger mb-4">Create New Project</h2>
+    <h2 class="text-center mb-4" style="color: #8B0000;">Create New Project</h2>
 
     <form method="POST" action="/create" class="mx-auto" style="max-width: 600px;">
       <div class="mb-3">
@@ -14,7 +14,8 @@
       </div>
 
       <div class="text-end">
-        <button type="submit" class="btn btn-red">Create</button>
+        <button type="submit" class="btn btn-red" style="background-color:#8B0000;
+        color:white">Create</button>
       </div>
     </form>
 {% endblock %}
