@@ -1,5 +1,4 @@
 # tools/gemini_vision_tool.py
-
 from crewai.tools import BaseTool
 import google.generativeai as genai
 from PIL import Image
@@ -18,4 +17,4 @@ class OCRTool(BaseTool):
             response = model.generate_content([prompt, img])
             return response.text
         except Exception as e:
-            return f"❌ Failed to process image: {e}"
+            return f"Failed to process image: {e}"

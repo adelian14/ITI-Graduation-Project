@@ -29,9 +29,11 @@ def parse_document_content(doc: DocumentObject):
 def convert_pdf_to_images(pdf_path, doc_id, dpi=300):
     # Create output directory if it doesn't exist
     os.makedirs(TEMP_DIR, exist_ok=True)
-
+    # poppler_path = r"poppler-24.08.0\Library\bin"
+    # images = convert_from_path(pdf_path, dpi=dpi, poppler_path=poppler_path)
     # Convert PDF pages to images
     images = convert_from_path(pdf_path, dpi=dpi)
+    
 
     # Save images to the output folder
     image_paths = []
