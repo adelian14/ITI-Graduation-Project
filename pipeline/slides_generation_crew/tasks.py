@@ -88,6 +88,7 @@ class SlidesGenerationTasks:
             - Design visual hierarchy for each slide type
             - Plan content chunking for optimal processing
             - Ensure logical concept building and scaffolding
+            - Module -> lesson -> topic -> subtopic -> concept
 
             4. **Engagement Strategy:**
             - Plan interaction points and active learning moments
@@ -96,9 +97,7 @@ class SlidesGenerationTasks:
             - Plan for different learning preferences
 
             5. **Time and Pacing:**
-            - Allocate appropriate time per slide
             - Plan for questions and discussion
-            - Include buffer time for complex concepts
             - Design natural break points
 
             6. **Visual Design Guidelines:**
@@ -112,6 +111,7 @@ class SlidesGenerationTasks:
             - Specify font, color, and styling guidelines
             - Plan for multimedia integration
             - Consider export and sharing requirements
+            - consider that I will put the content on pptx slids
 
             Create a detailed slide-by-slide blueprint that maximizes learning effectiveness.
             """,
@@ -130,110 +130,113 @@ class SlidesGenerationTasks:
             description="""
             Create a comprehensive, production-ready JSON structure for PowerPoint presentation generation using the following STATIC TEMPLATE structure:
 
-            REQUIRED JSON STRUCTURE (DO NOT MODIFY THESE KEYS):
+        REQUIRED JSON STRUCTURE (DO NOT MODIFY THESE KEYS):
 
-            ```json
-            {
-                "presentation_metadata": {
-                    "title": "",
-                    "author": "",
-                    "date": "",
-                    "duration_estimate": "",
-                    "difficulty_level": "",
-                    "prerequisites": [],
-                    "summary": "",
-                    "version": "1.0"
-                },
-                "learning_objectives": [
-                    {
-                        "id": "",
-                        "description": "",
-                        "bloom_level": "",
-                        "assessment_method": ""
-                    }
-                ],
-                "slides": [
-                    {
-                        "slide_id": "",
-                        "slide_number": 1,
-                        "slide_type": "",
-                        "title": "",
-                        "content": {
-                            "header": "",
-                            "subheader": "",
-                            "bullet_points": [],
-                            "text_blocks": [],
-                            "tables": [
-                                {
-                                    "headers": [],
-                                    "rows": []
-                                }
-                            ],
-                            "plots": [
-                                {
-                                    "type": "",
-                                    "title": "",
-                                    "description": "",
-                                    "data_source": ""
-                                }
-                            ],
-
-                        },
-                        "presenter_notes": "",
-                        "time_allocation": 0,
-                        "visual_elements": {
-                            "layout": "",
-                            "background": "",
-                            "color_scheme": ""
-                        }
-                    }
-                ],
-                "styling": {
-                    "theme": "",
-                    "font_primary": "",
-                    "font_secondary": "",
-                    "color_palette": {
-                        "primary": "",
-                        "secondary": "",
-                        "accent": "",
-                        "background": "",
-                        "text": ""
-                    }
-                },
-                "export_config": {
-                    "output_format": "pptx",
-                    "resolution": "1920x1080",
-                    "compression_quality": "high",
-                    "speaker_view": true,
-                    "handout_mode": false
-                },
-                "extensibility": {
-                    "custom_fields": {},
-                    "ai_agent_hooks": [],
-                    "integration_points": []
+        ```json
+        {
+            "presentation_metadata": {
+                "title": "",
+                "author": "",
+                "date": "",
+                "duration_estimate": "",
+                "difficulty_level": "",
+                "prerequisites": [],
+                "summary": "",
+                "version": "1.0"
+            },
+            "learning_objectives": [
+                {
+                    "id": "",
+                    "description": "",
+                    "bloom_level": "",
+                    "assessment_method": ""
                 }
+            ],
+            "slides": [
+                {
+                    "slide_id": "",
+                    "slide_number": 1,
+                    "slide_type": "",
+                    "title": "",
+                    "content": {
+                        "header": "",
+                        "subheader": "",
+                        "bullet_points": [],
+                        "text_blocks": [],
+                        "tables": [
+                            {
+                                "headers": [],
+                                "rows": []
+                            }
+                        ],
+                        "plots": [
+                            {
+                                "type": "",
+                                "title": "",
+                                "description": "",
+                                "data_source": ""
+                            }
+                        ],
+
+                    },
+                    "presenter_notes": "",
+                    "time_allocation": 0,
+                    "visual_elements": {
+                        "layout": "",
+                        "background": "",
+                        "color_scheme": ""
+                    }
+                }
+            ],
+            "styling": {
+                "theme": "",
+                "font_primary": "Arial",
+                "font_secondary": "Arial",
+                "color_palette": {
+                    "primary": "#8b0000",
+                    "secondary": "#fcf2f2",
+                    "accent": "#FFD700",
+                    "text": "#010000",
+                    "background": "#faf7f7",
+                    "heading": "#070000"
+                }
+            },
+            "export_config": {
+                "output_format": "pptx",
+                "resolution": "1920x1080",
+                "compression_quality": "high",
+                "speaker_view": true,
+                "handout_mode": false
+            },
+            "extensibility": {
+                "custom_fields": {},
+                "ai_agent_hooks": [],
+                "integration_points": []
             }
-            ```
+        }
+        ```
 
-            REQUIREMENTS:
-            1. **Maintain Static Keys:** Do NOT modify the structure or key names above
-            2. **Populate with Content:** Fill all fields with appropriate content based on the lesson analysis
-            3. **Ensure Completeness:** Every slide must have complete content structure
-            4. **Validate Data Types:** Use correct data types (strings, arrays, objects, numbers, booleans)
-            5. **Cover All Use Cases:** Include examples of:
-            - Header and subheader usage
-            - Bullet point lists
-            - Text blocks for detailed content
-            - Tables with proper headers and rows
-            - Plot/chart specifications
+        REQUIREMENTS:
+        1. **Maintain Static Keys:** Do NOT modify the structure or key names above
+        2. **Populate with Content:** Fill all fields with appropriate content based on the lesson analysis
+        3. **Ensure Completeness:** Every slide must have complete content structure
+        4. **Validate Data Types:** Use correct data types (strings, arrays, objects, numbers, booleans)
+        5. **Cover All Use Cases:** Include examples of:
+           - Header and subheader usage
+           - Bullet point lists
+           - Text blocks for detailed content
+           - Tables with proper headers and rows
+           - Plot/chart specifications
+           - IF you found **text** it means the text is bold
+           - subheader are bold and the font size are bigger  that text
 
-            SPECIFIC CONTENT REQUIREMENTS:
-            - Create at least 8-12 slides covering the lesson content
-            - Include variety in slide types (title, content, diagram, summary, etc.)
-            - Ensure proper content distribution across slides
-            - Add comprehensive presenter notes for each slide
-            - Include realistic time allocations
-            - Specify appropriate visual elements and styling
+        SPECIFIC CONTENT REQUIREMENTS:
+        - Create at least 5 slides covering the lesson content
+        - Ensure each slide has a title and content
+        - Ensure proper content distribution across slides
+        - Add comprehensive presenter notes for each slide
+        - Include realistic time allocations
+        - Specify appropriate visual elements and styling
 
             Generate a complete, valid JSON structure that can be directly used by PowerPoint generation tools.
             """,
