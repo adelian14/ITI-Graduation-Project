@@ -21,8 +21,6 @@ certifi==2025.6.15
 cffi==1.17.1
 cfgv==3.4.0
 charset-normalizer==3.4.2
-chroma-hnswlib==0.7.6
-chromadb==0.5.23
 click==8.2.1
 cohere==5.16.1
 colorama==0.4.6
@@ -257,3 +255,8 @@ WTForms==3.2.1
 yarl==1.20.1
 zipp==3.23.0
 zstandard==0.23.0
+crewai.tools
+python-pptx
+pydantic
+langchain
+crewai
