@@ -12,7 +12,7 @@ from firebase.operations import (
     save_lesson_version,
     save_topic_version
 )
-from pipeline.generation import lesson_generation, topic_generation
+from pipeline.generation import lesson_generation, topic_generation, full_generation
 
 
 generateRoute_bp = Blueprint("generate_route",__name__,url_prefix="/projects/<project_id>")
@@ -64,6 +64,7 @@ def generate_lesson_material(project_id, lesson_id):
     version = lesson_generation(lesson, setting)
     
     if version:
+        full_generation(version)
         save_lesson_version(project_id, lesson_id, version)
 
     return redirect(f"/projects/{project_id}/lessons/{lesson_id}")
@@ -83,6 +84,8 @@ def generate_topic_material(project_id, topic_id):
 
     version = topic_generation(topic, setting)
     
-    save_topic_version(project_id, topic_id, version)
+    if version:
+        full_generation(version)
+        save_topic_version(project_id, topic_id, version)
 
     return redirect(f"/projects/{project_id}/topics/{topic_id}")

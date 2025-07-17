@@ -2,8 +2,6 @@ import convertapi
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
-
 convertapi.api_credentials = os.getenv('convertapi')
 
 

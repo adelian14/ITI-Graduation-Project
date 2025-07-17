@@ -9,7 +9,7 @@ class NarrativeGenerationCrew:
         self.tasks = NarrativeGenerationTasks()
 
     
-    def create_crew(self, learner):
+    def create_crew(self, lesson, learner):
         # Initialize all agents
         content_analyzer_agent = self.agents.content_analyzer_agent
         personalization_agent = self.agents.personalization_agent
@@ -18,7 +18,7 @@ class NarrativeGenerationCrew:
 
         # Create tasks with dependencies
         analyze_and_structure_task = self.tasks.create_analyze_and_structure_task(
-            lesson_content_string=learner,
+            lesson_content_string=lesson,
             learner = learner,
             agent=content_analyzer_agent
         )
@@ -47,11 +47,11 @@ class NarrativeGenerationCrew:
             process="sequential"  # Explicitly set process type
         )
     
-    def run(self, learner):
+    def run(self, lesson ,learner):
         # Dictionary to store individual agent outputs
         agent_outputs = {}
         # Create crew with learner profile
-        crew = self.create_crew(learner)
+        crew = self.create_crew(lesson, learner)
 
         try:
             # Execute crew and get final result
@@ -73,27 +73,13 @@ class NarrativeGenerationCrew:
         return agent_outputs
     
     # Function to get specific agent output
-    def get_agent_output(agent_name, agent_outputs):
+    def get_agent_output(self, agent_name, agent_outputs):
         """Get output from a specific agent"""
         if agent_name in agent_outputs:
-            return agent_outputs[agent_name]
+            return agent_outputs[agent_name].raw
         else:
             print(f" Agent '{agent_name}' not found. Available agents:")
             for name in agent_outputs.keys():
                 print(f"   - {name}")
             return None
-
-
-# class LearnerProfile:
-#     def __init__(self):
-#         self.age = "18–20"
-#         self.experience = "Beginner"
-#         self.style = "Step-by-step with analogies"
-#         self.language = "Simple and friendly"
-#         self.tone = "Curious and motivational"
-#         self.attention_span = "5-7 minutes"
-#         self.learning_preference = "Visual and auditory"
-
-# learner = LearnerProfile()
-
 

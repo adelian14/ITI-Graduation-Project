@@ -2,7 +2,7 @@ from crewai import Task
 from datetime import datetime
 
 class NarrativeGenerationTasks:
-    def create_analyze_and_structure_task(lesson_content_string, learner, agent):
+    def create_analyze_and_structure_task(self, lesson_content_string, learner, agent):
         return Task(
             description=f"""
             CONTENT ANALYSIS & NARRATIVE STRUCTURING
@@ -43,7 +43,7 @@ class NarrativeGenerationTasks:
         )
 
 
-    def create_personalize_content_task(learner, agent, dependency_task):
+    def create_personalize_content_task(self, learner, agent, dependency_task):
         return Task(
             description=f"""
             AUDIENCE PERSONALIZATION & CUSTOMIZATION
@@ -86,7 +86,7 @@ class NarrativeGenerationTasks:
         )
 
 
-    def create_produce_video_script_task(learner, agent, dependency_task):
+    def create_produce_video_script_task(self, learner, agent, dependency_task):
         return Task(
             description=f"""
             VIDEO SCRIPT PRODUCTION
@@ -135,7 +135,7 @@ class NarrativeGenerationTasks:
         )
 
 
-    def create_format_markdown_task(learner, agent, dependency_task):
+    def create_format_markdown_task(self, learner, agent, dependency_task):
         return Task(
             description=f"""
             MARKDOWN FORMATTING & DOCUMENTATION

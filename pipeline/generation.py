@@ -5,10 +5,12 @@ from models. LessonVersion import LessonVersion
 from models.LessonSetting import LessonSetting
 from models.Course import Course
 from models.Content import Content
+from models.LearnerProfile import LearnerProfile
 from utils.json_utils import id_json
 from uuid import uuid4
 from pipeline.generation_crew.crew import build_lesson_generation_crew
 from pipeline.roadmap_generation_crew.roadmap_generation import generate_roadmap
+from pipeline.Narrative_generation_crew.crew import NarrativeGenerationCrew
 
 def lesson_generation(lesson: Lesson, setting: LessonSetting) -> LessonVersion:
     version = LessonVersion(
@@ -56,4 +58,16 @@ def generate_course(course: Course):
         course.content = Content.from_dict(content)
     except Exception as e:
         print(f"Couldn't parse file, Try again with another file. {e}")
-    
+
+def full_generation(lesson: LessonVersion | Topic):
+    lesson_string = lesson.rawLesson or lesson.rawTopic
+    setting = lesson.lessonSetting
+    learner = LearnerProfile()
+    learner.age = setting.ageGroup
+    learner.experience = setting.experienceLevel
+    learner.style = setting.explanatoryStyle
+    learner.tone = setting.teachingTone
+    crew = NarrativeGenerationCrew()
+    outputs = crew.run(lesson_string, learner)
+    lesson.narrative = crew.get_agent_output('Audience Personalization & Learning Experience Designer',outputs)
+    lesson.videoScript = crew.get_agent_output('Markdown Documentation Specialist', outputs)
