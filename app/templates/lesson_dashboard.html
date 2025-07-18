@@ -4,101 +4,271 @@
     <button onclick="window.history.back()" class="btn-back">
         <i class="fas fa-arrow-left"></i> Back
     </button>
-        <h2 class="mb-0">{{ lesson.title }}</h2>
-        <p class="text-muted">{{ lesson.description }}</p>
+    <h2 class="page-header">{{ lesson.title }}</h2>
+    <p class="text-muted">{{ lesson.description }}</p>
 
-        <hr>
-        <h4>🧩 Covered Topics</h4>
-        <div class="project-card">
-            <div class="project-content">
-                {% for topic_item in lesson.children %}
-                <div class="col-md-6 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ topic_item.title }}</h5>
-                            {% if topic_item.rawTopic %}
-                            <p class="card-text">{{ topic_item.rawTopic[:120] }}...</p>
-                            {% endif %}
-                            <a href="/projects/{{ project.id }}/topics/{{ topic_item.id }}"
-                                class="btn primary-btn">View Topic</a>
-                        </div>
+    <hr>
+    <h4>🧩 Covered Topics</h4>
+    <div class="row">
+        {% for topic_item in lesson.children %}
+        <div class="col-md-6 mb-4">
+            <div class="topic-card">
+                <div class="topic-content">
+                    <h5 class="topic-title">{{ topic_item.title }}</h5>
+                    {% if topic_item.rawTopic %}
+                    <p class="topic-description">{{ topic_item.rawTopic[:120] }}...</p>
+                    {% endif %}
+                    <div class="topic-footer">
+                        <a href="/projects/{{ project.id }}/topics/{{ topic_item.id }}"
+                            class="btn-view-topic">View Topic</a>
                     </div>
                 </div>
-                {% endfor %}
             </div>
         </div>
-        <hr class="mt-5">
-        <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
-            <h4>📒 Generated Lesson Versions</h4>
-            <form method="GET"
-                action="/projects/{{ project.id }}/lessons/{{ lesson.id }}/generate">
-                <button type="submit" class="btn primary-btn">Generate New Version</button>
-            </form>
-        </div>
+        {% endfor %}
+    </div>
 
-        <div class="row">
-            {% for version in lesson.get_all_lessons() %}
-            <div class="col-md-4 mb-3">
-                <div class="card h-100 shadow-sm border border-light">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ version.title }}</h5>
-                        <p class="card-subtitle mb-2 text-muted">Level: {{ version.lessonSetting.experienceLevel }}</p>
-                        <p class="card-text"><small>Generated on {{ version.generatedAt.strftime('%Y-%m-%d %H:%M')
-                                }}</small></p>
+    <hr class="mt-5">
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+        <h4>📒 Generated Lesson Versions</h4>
+        <form method="GET"
+            action="/projects/{{ project.id }}/lessons/{{ lesson.id }}/generate">
+            <button type="submit" class="btn-generate">Generate New Version</button>
+        </form>
+    </div>
+
+    <div class="row">
+        {% for version in lesson.get_all_lessons() %}
+        <div class="col-md-4 mb-4">
+            <div class="version-card">
+                <div class="version-content">
+                    <h6 class="version-title">{{ version.title }}</h6>
+                    <p class="version-subtitle">Level: {{ version.lessonSetting.experienceLevel }}</p>
+                    <p class="version-date"><small>Generated on {{ version.generatedAt.strftime('%Y-%m-%d %H:%M') }}</small></p>
+                    <div class="version-footer">
                         <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}"
-                            class="btn primary-btn">View</a>
+                            class="btn-view-version">View</a>
                     </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
+    </div>
 </div>
 <style>
-       .card {
-        border-radius: 12px !important;
-        overflow: hidden;
+    /* Main container */
+    .project-dashboard {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
     }
 
-.row {
-    --bs-gutter-x: 1.5rem;
-    --bs-gutter-y: 0;
-    display: flex
-;
-    flex-wrap: wrap;
-    margin-top: 2rem;
-    margin-right: calc(-.5 * var(--bs-gutter-x));
-    margin-left: calc(-.5 * var(--bs-gutter-x));
-}
-.h4,h4 {
+    /* Back button */
+    .btn-back {
+        background: var(--light-gray);
+        border: none;
+        color: var(--primary-color);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-back:hover {
+        background: #e0e0e0;
+        transform: translateX(-2px);
+    }
+
+    /* Page header */
+    .page-header {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    .page-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: var(--primary-color);
+        border-radius: 3px;
+    }
+
+    /* Text muted */
+    .text-muted {
+        color: var(--text-color);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    /* Section headers */
+    .h4, h4 {
         font-size: 1.5rem;
         margin-top: 2rem;
-        color:var(--primary-color);
+        color: var(--primary-color);
         font-weight: 500;
     }
- .project-content {
-        padding: 1.5rem;
-        position: relative;
+
+    /* Row styling */
+    .row {
+        --bs-gutter-x: 1.5rem;
+        --bs-gutter-y: 0;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+        margin-right: calc(-.5 * var(--bs-gutter-x));
+        margin-left: calc(-.5 * var(--bs-gutter-x));
     }
-    .card-body {
-    flex: 1 1 auto;
-    padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
-    color: var(--bs-card-color);
-    margin: 10px;
-}
-.project-card {
+
+    /* Topic cards */
+    .topic-card {
         background: white;
         border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         overflow: hidden;
         transition: all 0.3s ease;
-        position: relative;
         border: 1px solid rgba(91, 28, 28, 0.1);
+        height: 100%;
     }
-    
-    .project-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-    }
-</style>
 
+    .topic-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .topic-content {
+        padding: 1.5rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .topic-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+        color: var(--dark-color);
+    }
+
+    .topic-description {
+        font-size: 0.95rem;
+        color: var(--text-color);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+    .topic-footer {
+        margin-top: auto;
+    }
+
+    /* Version cards */
+    .version-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(91, 28, 28, 0.1);
+        height: 100%;
+    }
+
+    .version-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .version-content {
+        padding: 1.5rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .version-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--dark-color);
+    }
+
+    .version-subtitle {
+        font-size: 0.9rem;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .version-date {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+    }
+
+    .version-footer {
+        margin-top: auto;
+    }
+
+    /* Buttons */
+    .btn-view-topic,
+    .btn-view-version,
+    .btn-generate {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(139, 0, 0, 0.2);
+    }
+
+    .btn-view-topic:hover,
+    .btn-view-version:hover,
+    .btn-generate:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+    }
+
+    .btn-generate {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @media (max-width: 768px) {
+        .project-dashboard {
+            padding: 1.5rem;
+        }
+
+        .row {
+            flex-direction: column;
+        }
+
+        .col-md-6, .col-md-4 {
+            width: 100%;
+        }
+    }
+    .topic-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: var(--dark-color);
+}
+</style>
 {% endblock %}
