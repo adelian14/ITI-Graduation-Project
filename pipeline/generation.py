@@ -62,7 +62,10 @@ def generate_course(course: Course):
         print(f"Couldn't parse file, Try again with another file. {e}")
 
 def full_generation(lesson: LessonVersion | Topic):
-    lesson_string = lesson.rawLesson or lesson.rawTopic
+    if lesson.isinstance(LessonVersion):
+        lesson_string = lesson.rawLesson
+    else:
+        lesson_string = lesson.rawTopic
     setting = lesson.lessonSetting
     learner = LearnerProfile()
     learner.age = setting.ageGroup
