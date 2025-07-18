@@ -5,7 +5,7 @@ ID_KEY = "id"
 PARENT_ID_KEY = "parentId"
 
 def str_to_json(str_content):
-    json_contnet = extract_between_braces(json_contnet)
+    json_contnet = extract_between_braces(str_content)
     json_contnet = json_contnet.replace('\n',' ')
     json_contnet = json.loads(json_contnet)
     return json_contnet
@@ -29,10 +29,11 @@ def id_json(parent_id, json_contnet):
     return json_contnet
 
 def extract_between_braces(input_string):
+    print(input_string)
     start_index = input_string.find('{')
     end_index = input_string.rfind('}')
-    
+
     if start_index != -1 and end_index != -1 and start_index < end_index:
-        return input_string[start_index:end_index+1]
+        return input_string[start_index:end_index + 1]  # Include the curly braces
     else:
-        return None
+        return {"error": "not valid json"}

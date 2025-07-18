@@ -16,13 +16,10 @@ def parse_document_content(doc: DocumentObject):
     image_paths = convert_pdf_to_images(local_path, doc.id)
     crew = build_pdf_parsing_crew(image_paths)
     result = crew.kickoff()
-    try:
-        json_content = str_to_json(str(result))
-        json_content = id_json(doc.id, json_content)
-        doc.parsedContent = Content.from_dict(json_content)
-        doc.error = None
-    except Exception as e:
-        doc.error = f"Couldn't parse file, Try again with another file. {e}"
+    json_content = str_to_json(str(result))
+    json_content = id_json(doc.id, json_content)
+    doc.parsedContent = Content.from_dict(json_content)
+    doc.error = None
     clear_temp_folder()
 
 
