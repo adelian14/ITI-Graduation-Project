@@ -12,8 +12,10 @@ from app.routes.topic_dashboard import topicDashboard_bp
 from app.routes.generate_route import generateRoute_bp
 from app.routes.course_dashboard import courseDashboard_bp
 from app.routes.gen_material import genMaterial_bp
+from app.routes.delete_project import deleteProject_bp
 from dotenv import load_dotenv
 from markdown import markdown
+
 
 load_dotenv()
 
@@ -27,6 +29,7 @@ app.register_blueprint(create_bp)
 app.register_blueprint(project_bp)
 app.register_blueprint(upload_bp)
 app.register_blueprint(deleteDocument_bp)
+app.register_blueprint(deleteProject_bp)
 app.register_blueprint(createCourse_bp)
 app.register_blueprint(documentDashboard_bp)
 app.register_blueprint(courseDashboard_bp)

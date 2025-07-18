@@ -2,6 +2,7 @@ from firebase.config import db
 from models.Project import Project
 from models.LessonVersion import LessonVersion
 from models.Topic import Topic
+from firebase.file_operations import delete_file_from_storage
 
 PROJECTS_COLLECTION = 'projects'
 
@@ -41,6 +42,19 @@ def get_project_by_id(project_id: str):
     if doc.exists:     
         return Project.from_dict(doc.to_dict())
     return None
+
+def delete_project_by_id(project_id):
+    project = get_project_by_id(project_id)
+    for doc in project.documents:
+        delete_file_from_storage(doc)
+
+    project_ref = db.collection(PROJECTS_COLLECTION).document(project_id)
+    snapshot = project_ref.get()
+    if snapshot.exists:
+        project_ref.delete()
+
+    
+    
 
 def get_document_by_id(project_id: str, doc_id: str):
     prj = get_project_by_id(project_id)
