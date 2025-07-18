@@ -1,57 +1,37 @@
 {% extends 'base.html' %}
 {% block content %}
   <div class="container py-4">
-    <h2 class="text-center mb-4" style="color: #8B0000;">My Projects</h2>
+    <h2 class="mb-4" style="color: #8B0000;">My Projects</h2>
 
     {% if projects %}
-      <div class="row row-cols-1 row-cols-md-2 g-3">
+      <div class="project-list">
         {% for project in projects %}
-          <div class="col">
-            <div class="card border-0 shadow-sm h-100">
-              <div class="card-body p-4">
-                <h5 class="card-title fw-bold mb-3">{{ project.title }}</h5>
-                
-                <!-- Progress bar -->
-                <div class="progress mb-2" style="height: 6px;">
-                  <div class="progress-bar 
-                      {% if project.progress == 100 %}
-                          bg-success
-                      {% else %}
-                          bg-primary
-                      {% endif %}" 
-                      role="progressbar" 
-                      aria-valuenow="{{ project.progress }}" 
-                      aria-valuemin="0" 
-                      aria-valuemax="100">
-                  </div>
-                </div>
-                
-                <!-- Progress text -->
-                <p class="mb-1 small text-muted">
-                  {{ project.description }}
-                </p>
-                
-                <!-- Time spent 
-                <p class="mb-2 small text-muted">
-                  {{ project.time_spent }} hours
-                </p>
-                
-               
-                <div class="mb-3">
+          <div class="project-card">
+            <div class="project-content">
+              <!-- Delete button (visible on hover) -->
+              <button class="btn-delete" title="Delete project">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              
+              <h3 class="project-title">{{ project.title }}</h3>
+              <p class="project-description">{{ project.description }}</p>
+              
+              <div class="project-footer">
+                <span class="project-status">
                   {% if project.progress == 100 %}
-                    <span class="badge bg-success bg-opacity-10 text-success">
-                      Certificate Earned
-                    </span>
+                    <i class="fas fa-check-circle"></i> Completed
                   {% else %}
-                    <span class="badge bg-warning bg-opacity-10 text-warning">
-                      In Progress
-                    </span>
+                    <i class="fas fa-spinner"></i> In Progress
                   {% endif %}
-                </div> -->
-                
-                <!-- Buttons -->
-                <div class="d-flex justify-content-between pt-2">
-                  <a href="/projects/{{ project.id }}" class="btn btn-primary btn-sm px-3">Continue</a>
+                </span>
+                <div class="project-actions">
+                  <a href="/projects/{{ project.id }}" class="btn-continue" data-project-id="{{ project.id }}">
+                    <span class="btn-text">Continue</span>
+                    <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
+                    <span class="btn-loader">
+                      <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -59,25 +39,217 @@
         {% endfor %}
       </div>
     {% else %}
-      <p class="text-center text-muted fs-5 mt-5">You have no projects yet.</p>
+      <div class="empty-state">
+        <i class="fas fa-folder-open"></i>
+        <p>You have no projects yet.</p>
+      </div>
     {% endif %}
   </div>
 
   <!-- Floating Action Button -->
-  <a href="/create" class="btn btn-danger rounded-circle shadow" style="
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 60px;
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.8rem;
-        font-weight: 300;
-        line-height: 1;
-        background-color:#8B0000;
-    ">
-    +
+  <a href="/create" class="fab">
+    <i class="fas fa-plus"></i>
   </a>
+
+  <style>
+    /* Main container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding-bottom: 80px;
+    }
+    
+    /* Project list */
+    .project-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    /* Project card */
+    .project-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .project-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    .project-content {
+      padding: 20px;
+      position: relative;
+    }
+    
+    /* Project title */
+    .project-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+      text-transform: capitalize;
+    }
+    
+    /* Project description */
+    .project-description {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    
+    /* Project footer */
+    .project-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    /* Status badge */
+    .project-status {
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background-color: #f0f0f0;
+      color: #555;
+    }
+    
+    .project-status i {
+      margin-right: 4px;
+    }
+    
+    /* Continue button with loading state */
+    .btn-continue {
+      background-color: #8B0000;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 13px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 80px;
+      height: 32px;
+    }
+    
+    .btn-continue:hover {
+      background-color: #6d0000;
+    }
+    
+    .btn-text, .btn-icon, .btn-loader {
+      transition: all 0.2s ease;
+    }
+    
+    .btn-loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+    }
+    
+    .btn-continue.loading .btn-text,
+    .btn-continue.loading .btn-icon {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    
+    .btn-continue.loading .btn-loader {
+      opacity: 1;
+    }
+    
+    /* Delete button (hidden by default) */
+    .btn-delete {
+      background: none;
+      border: none;
+      color: #8B0000;
+      opacity: 0;
+      cursor: pointer;
+      padding: 6px;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      transition: opacity 0.2s ease;
+    }
+    
+    .project-card:hover .btn-delete {
+      opacity: 0.7;
+    }
+    
+    .btn-delete:hover {
+      opacity: 1 !important;
+    }
+    
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 40px 0;
+      color: #888;
+    }
+    
+    .empty-state i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+    
+    /* Floating action button */
+    .fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 56px;
+      height: 56px;
+      background-color: #8B0000;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+      z-index: 100;
+    }
+    
+    .fab:hover {
+      transform: scale(1.05);
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Handle continue button clicks
+      document.querySelectorAll('.btn-continue').forEach(button => {
+        button.addEventListener('click', function(e) {
+          // Show loading state
+          this.classList.add('loading');
+          
+          // This will ensure loading state stops when page unloads
+          const stopLoading = function() {
+            button.classList.remove('loading');
+            window.removeEventListener('beforeunload', stopLoading);
+          };
+          
+          window.addEventListener('beforeunload', stopLoading);
+          
+          // Fallback in case navigation doesn't occur
+          setTimeout(() => {
+            if (button.classList.contains('loading')) {
+              button.classList.remove('loading');
+              window.removeEventListener('beforeunload', stopLoading);
+            }
+          }, 3000); // Remove after 3 seconds if still loading
+        });
+      });
+    });
+  </script>
 {% endblock %}
