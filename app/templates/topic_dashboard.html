@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="project-dashboard">
+    <button onclick="window.history.back()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
         <!-- Topic Title and Description -->
         <h2 class="mb-0">{{ topic.title }}</h2>
         {% if topic.description %}
@@ -26,7 +30,7 @@
             <h4>📘 Generated Topic Versions</h4>
             <form method="GET"
                 action="/projects/{{ project.id }}/topics/{{ topic.id }}/generate">
-                <button type="submit" class="btn btn-danger btn-sm">Generate New Version</button>
+                <button type="submit" class="btn primary-btn">Generate New Version</button>
             </form>
         </div>
 
@@ -40,10 +44,11 @@
                         <p class="card-text"><small>Generated on {{ version.generatedAt.strftime('%Y-%m-%d %H:%M')
                                 }}</small></p>
                         <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}"
-                            class="btn btn-outline-danger btn-sm">View</a>
+                            class="btn primary-btn">View</a>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
+</div>
 {% endblock %}

@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="project-dashboard">
+    <button onclick="window.history.back()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
         <h2 class="mb-0">{{ lesson.title }}</h2>
         <p class="text-muted">{{ lesson.description }}</p>
 
@@ -9,13 +13,13 @@
             {% for topic_item in lesson.children %}
             <div class="col-md-6 mb-3">
                 <div class="card h-100">
-                    <div class="card-body">
+                    <div class="project-dashboard">
                         <h5 class="card-title">{{ topic_item.title }}</h5>
                         {% if topic_item.rawTopic %}
                         <p class="card-text">{{ topic_item.rawTopic[:120] }}...</p>
                         {% endif %}
                         <a href="/projects/{{ project.id }}/topics/{{ topic_item.id }}"
-                            class="btn btn-outline-secondary btn-sm">View Topic</a>
+                            class="btn primary-btn">View Topic</a>
                     </div>
                 </div>
             </div>
@@ -27,7 +31,7 @@
             <h4>📒 Generated Lesson Versions</h4>
             <form method="GET"
                 action="/projects/{{ project.id }}/lessons/{{ lesson.id }}/generate">
-                <button type="submit" class="btn btn-danger btn-sm">Generate New Version</button>
+                <button type="submit" class="btn primary-btn">Generate New Version</button>
             </form>
         </div>
 
@@ -41,11 +45,11 @@
                         <p class="card-text"><small>Generated on {{ version.generatedAt.strftime('%Y-%m-%d %H:%M')
                                 }}</small></p>
                         <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}"
-                            class="btn btn-outline-danger btn-sm">View</a>
+                            class="btn primary-btn">View</a>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-
+</div>
 {% endblock %}
