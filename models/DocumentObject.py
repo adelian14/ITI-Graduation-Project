@@ -35,12 +35,12 @@ class DocumentObject:
     def from_dict(cls, data):
         doc = cls(
             _id=data["id"],
-            name=data["name"],
-            extension=data["extension"],
+            name=data.get("name","NO name!!"),
+            extension=data.get("extension","NO ext??!!"),
             parsed_content=Content.from_dict(data["parsedContent"]) if data.get("parsedContent") else None,
-            uploaded_at=datetime.fromisoformat(data["uploadedAt"]),
-            json_representation=data["jsonRepresentation"],
-            parent_project_id=data["parentProjectId"]
+            uploaded_at=datetime.fromisoformat(data["uploadedAt"]) if data.get("uploadedAt") else datetime.fromisoformat("2000-01-01") ,
+            json_representation=data.get("jsonRepresentation","whyyyy"),
+            parent_project_id=data.get("parentProjectId", "I'm crying")
         )
         doc.error=data.get("error",None)
         return doc

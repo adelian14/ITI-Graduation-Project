@@ -45,6 +45,9 @@ def get_project_by_id(project_id: str):
 
 def delete_project_by_id(project_id):
     project = get_project_by_id(project_id)
+    if not project:
+        return False
+    
     for doc in project.documents:
         delete_file_from_storage(doc)
 

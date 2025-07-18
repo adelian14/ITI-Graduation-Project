@@ -57,7 +57,7 @@ class Project:
         self.sort_docs()
     
     def delete_course(self, crs_id):
-        self.documents = [c for c in self.courses if c.id != crs_id]
+        self.courses = [c for c in self.courses if c.id != crs_id]
         self.sort_courses()
     
     def add_doc(self, doc: DocumentObject):
