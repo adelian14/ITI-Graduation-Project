@@ -37,7 +37,7 @@ def upload_pptx_to_firebase(local_path: str, project_id: str) -> str:
 
     return storage_path
 
-def get_download_link(storage_path: str, expires_in_minutes: int = 15) -> str:
+def get_download_link(storage_path: str, expires_in_minutes: int = 2000) -> str:
     blob = bucket.blob(storage_path)
     url = blob.generate_signed_url(expiration=timedelta(minutes=expires_in_minutes))
     return url

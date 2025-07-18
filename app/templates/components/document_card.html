@@ -12,16 +12,16 @@
     <!-- Main Card Link -->
     <a href="/projects/{{ project.id }}/documents/{{ doc.id }}" class="stretched-link text-decoration-none text-dark">
       <div class="card-body text-center">
-        <i class="fas fa-file-alt fa-3x text-primary"></i>
+        <i class="fas fa-file-{{ 'word' if doc.extension == 'docx' else 'pdf' }} fa-3x text-primary"></i>
         <h6 class="mt-2">{{ doc.name }}.{{ doc.extension }}</h6>
         <small class="text-muted d-block mb-2">{{ doc.uploadedAt.strftime('%Y-%m-%d %H:%M') }}</small>
 
         {% if doc.parsedContent %}
-        <span class="badge bg-success">
+        <span class="badge bg-success text-white">
           <i class="fas fa-check-circle me-1"></i>Parsed successfully
         </span>
         {% else %}
-        <span class="badge bg-secondary">
+        <span class="badge bg-secondary text-white">
           <i class="fas fa-play-circle me-1"></i>Click to parse
         </span>
         {% endif %}
