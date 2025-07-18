@@ -22,10 +22,10 @@ def get_project_metadata() -> list:
     docs = (
             db.collection(PROJECTS_COLLECTION)
             .order_by("createdAt", direction="DESCENDING")
-            .select(["id", "title", "description"])
+            .select(["id", "title", "description","documents", "courses"])
             .stream()
         )
-    return [{"id": doc.get("id"), "title": doc.get("title"), "description": doc.get("description")} for doc in docs]
+    return [{"id": doc.get("id"), "title": doc.get("title"), "description": doc.get("description"), "documents":doc.get("documents"), "courses":doc.get("courses")} for doc in docs]
 
 def get_project_metadata_by_id(project_id: str):
     doc = db.collection(PROJECTS_COLLECTION).document(project_id).get()

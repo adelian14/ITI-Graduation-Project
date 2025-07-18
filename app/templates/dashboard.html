@@ -26,11 +26,29 @@
 
                 <div class="project-footer">
                     <span class="project-status">
-                        {% if project.progress == 100 %}
-                        <i class="fas fa-check-circle"></i> Completed
-                        {% else %}
-                        <i class="fas fa-hourglass-half"></i> In Progress
+                        {% set num_docs = project.documents | length %}
+                        {% set num_courses = project.courses | length %}
+
+                        <div>
+                            {% if num_docs > 0 %}
+                            <i class="fas fa-file-alt"></i>
+                            {{ num_docs }} doc{{ 's' if num_docs != 1 else '' }}
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            {% if num_courses > 0 %}
+                            <i class="fas fa-book"></i>
+                            {{ num_courses }} course{{ 's' if num_courses != 1 else '' }}
+                            {% endif %}
+                        </div>
+
+                        {% if num_docs == 0 and num_courses == 0 %}
+                        <div>
+                            <i class="fas fa-info-circle me-1"></i> No content yet
+                        </div>
                         {% endif %}
+
                     </span>
                     <div class="project-actions">
                         <a href="/projects/{{ project.id }}" class="btn-continue">
@@ -64,7 +82,7 @@
         padding: 2rem;
         padding-bottom: 100px;
     }
-    
+
     /* Back button */
     .btn-back {
         background: var(--light-gray);
@@ -79,12 +97,12 @@
         align-items: center;
         gap: 0.5rem;
     }
-    
+
     .btn-back:hover {
         background: #e0e0e0;
         transform: translateX(-2px);
     }
-    
+
     /* Page header */
     .page-header {
         color: var(--primary-color);
@@ -94,7 +112,7 @@
         position: relative;
         padding-bottom: 0.5rem;
     }
-    
+
     .page-header::after {
         content: '';
         position: absolute;
@@ -105,35 +123,35 @@
         background: var(--primary-color);
         border-radius: 3px;
     }
-    
+
     /* Project list */
     .project-list {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
         gap: 1.5rem;
     }
-    
+
     /* Project card */
     .project-card {
         background: white;
         border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         overflow: hidden;
         transition: all 0.3s ease;
         position: relative;
         border: 1px solid rgba(91, 28, 28, 0.1);
     }
-    
+
     .project-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
     }
-    
+
     .project-content {
         padding: 1.5rem;
         position: relative;
     }
-    
+
     /* Project title */
     .project-title {
         font-size: 1.2rem;
@@ -142,7 +160,7 @@
         color: var(--dark-color);
         padding-right: 2rem;
     }
-    
+
     /* Project description */
     .project-description {
         font-size: 0.95rem;
@@ -150,14 +168,14 @@
         margin-bottom: 1.5rem;
         line-height: 1.6;
     }
-    
+
     /* Project footer */
     .project-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-    
+
     /* Status badge */
     .project-status {
         font-size: 0.85rem;
@@ -169,19 +187,19 @@
         align-items: center;
         gap: 0.5rem;
     }
-    
+
     .project-status i {
         font-size: 0.9rem;
     }
-    
+
     .project-status .fa-check-circle {
         color: #28a745;
     }
-    
+
     .project-status .fa-hourglass-half {
         color: var(--primary-color);
     }
-    
+
     /* Continue button with loading state */
     .btn-continue {
         background-color: var(--primary-color);
@@ -201,22 +219,26 @@
         height: 36px;
         box-shadow: 0 2px 8px rgba(139, 0, 0, 0.2);
     }
-    
+
     .btn-continue:hover {
         background-color: var(--secondary-color);
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
     }
-    
-    .btn-text, .btn-icon, .btn-loader, .btn-upload {
+
+    .btn-text,
+    .btn-icon,
+    .btn-loader,
+    .btn-upload {
         transition: all 0.2s ease;
     }
-    
+
     .btn-icon {
         margin-left: 0.5rem;
     }
-    
-    .btn-loader, .btn-upload {
+
+    .btn-loader,
+    .btn-upload {
         position: absolute;
         left: 50%;
         top: 50%;
@@ -226,27 +248,27 @@
         align-items: center;
         gap: 0.5rem;
     }
-    
+
     .btn-continue.loading .btn-text,
     .btn-continue.loading .btn-icon {
         opacity: 0;
         transform: translateY(5px);
     }
-    
+
     .btn-continue.loading .btn-loader {
         opacity: 1;
     }
-    
+
     .btn-continue.uploading .btn-text,
     .btn-continue.uploading .btn-icon {
         opacity: 0;
         transform: translateY(5px);
     }
-    
+
     .btn-continue.uploading .btn-upload {
         opacity: 1;
     }
-    
+
     /* Delete button (hidden by default) */
     .btn-delete {
         background: none;
@@ -266,17 +288,17 @@
         align-items: center;
         justify-content: center;
     }
-    
+
     .project-card:hover .btn-delete {
         opacity: 0.7;
         background: rgba(139, 0, 0, 0.1);
     }
-    
+
     .btn-delete:hover {
         opacity: 1 !important;
         background: rgba(139, 0, 0, 0.2);
     }
-    
+
     /* Delete confirmation modal */
     .delete-modal {
         display: none;
@@ -285,12 +307,12 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.5);
+        background: rgba(0, 0, 0, 0.5);
         z-index: 1000;
         justify-content: center;
         align-items: center;
     }
-    
+
     .delete-modal-content {
         background: white;
         padding: 2rem;
@@ -298,25 +320,25 @@
         max-width: 400px;
         width: 90%;
         text-align: center;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
     }
-    
+
     .delete-modal h3 {
         color: var(--primary-color);
         margin-bottom: 1rem;
     }
-    
+
     .delete-modal p {
         margin-bottom: 1.5rem;
         color: var(--text-color);
     }
-    
+
     .delete-modal-buttons {
         display: flex;
         justify-content: center;
         gap: 1rem;
     }
-    
+
     .delete-confirm-btn {
         background: var(--primary-color);
         color: white;
@@ -326,11 +348,11 @@
         cursor: pointer;
         transition: all 0.3s ease;
     }
-    
+
     .delete-confirm-btn:hover {
         background: var(--secondary-color);
     }
-    
+
     .delete-cancel-btn {
         background: var(--light-gray);
         color: var(--text-color);
@@ -340,11 +362,11 @@
         cursor: pointer;
         transition: all 0.3s ease;
     }
-    
+
     .delete-cancel-btn:hover {
         background: #e0e0e0;
     }
-    
+
     /* Empty state */
     .empty-state {
         text-align: center;
@@ -352,18 +374,18 @@
         color: var(--text-color);
         grid-column: 1 / -1;
     }
-    
+
     .empty-state i {
         font-size: 3.5rem;
         margin-bottom: 1.5rem;
         color: rgba(91, 28, 28, 0.2);
     }
-    
+
     .empty-state p {
         font-size: 1.1rem;
         margin-bottom: 1.5rem;
     }
-    
+
     .btn-create {
         background: var(--primary-color);
         color: white;
@@ -375,13 +397,13 @@
         display: inline-block;
         box-shadow: 0 2px 8px rgba(139, 0, 0, 0.2);
     }
-    
+
     .btn-create:hover {
         background: var(--secondary-color);
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
     }
-    
+
     /* Floating action button */
     .fab {
         position: fixed;
@@ -395,32 +417,32 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
         z-index: 100;
         font-size: 1.2rem;
     }
-    
+
     .fab:hover {
         transform: scale(1.1);
         background-color: var(--secondary-color);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     }
-    
+
     @media (max-width: 768px) {
         .project-list {
             grid-template-columns: 1fr;
         }
-        
+
         .container {
             padding: 1.5rem;
             padding-bottom: 100px;
         }
-        
+
         .page-header {
             font-size: 1.5rem;
         }
-        
+
         .delete-modal-content {
             width: 85%;
         }

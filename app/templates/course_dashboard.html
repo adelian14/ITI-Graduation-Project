@@ -2,218 +2,228 @@
 {% block content %}
 
 <div class="project-dashboard">
-    <button onclick="window.history.back()" class="btn-back">
-        <i class="fas fa-arrow-left"></i> Back
-    </button>
-    <button class="del btn-danger-delete" data-bs-toggle="modal" data-bs-target="#deleteCourseModal">
+
+
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <!-- Back Button (left) -->
+        <button onclick="window.history.back()" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+
+        <!-- Delete Button (right) in a form -->
+        <form action="/projects/{{ project.id }}/courses/{{ course.id }}/delete" method="POST"
+            onsubmit="return confirm('Are you sure you want to delete this course? This action cannot be undone.');">
+            <button type="submit" class="del btn-danger-delete">
                 <i class="fas fa-trash-alt me-1"></i> Delete Course
             </button>
-
-<div class="container-fluid py-4">
-    <!-- Document Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="mb-1">
-                {{ course.name }}
-            </h2>
-            <p class="text-muted mb-0">
-                <i class="far fa-calendar-alt me-1"></i>
-                Uploaded {{ course.generatedAt.strftime('%b %d, %Y at %H:%M') }}
-            </p>
-        </div>
+        </form>
     </div>
 
-    <hr class="my-4">
-
-    <!-- Parsed Content Section -->
-    <div class="mb-5">
-        <div class="d-flex align-items-center mb-3">
-            <i class="fas fa-file-alt me-3 text-danger"></i>
-            <h4 class="mb-0">Course Syllabus</h4>
-        </div>
-
-        {% if course.content %}
-        <div class="card mb-4 border-0 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title fw-bold">{{ course.content.title }}</h5>
-                <p class="card-text text-muted">{{ course.content.description }}</p>
+    <div class="container-fluid py-4">
+        <!-- Document Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="mb-1">
+                    {{ course.name }}
+                </h2>
+                <p class="text-muted mb-0">
+                    <i class="far fa-calendar-alt me-1"></i>
+                    Uploaded {{ course.generatedAt.strftime('%b %d, %Y at %H:%M') }}
+                </p>
             </div>
         </div>
 
-        <div class="accordion" id="contentAccordion">
-            {% for module in course.content.children %}
-            <div class="accordion-item border-0 mb-3 shadow-sm rounded-3">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed bg-light" type="button" 
-                            data-bs-toggle="collapse" data-bs-target="#module{{ module.id }}">
-                        <i class="fas fa-book me-2 text-warning"></i>
-                        <strong>{{ module.title }}</strong>
-                    </button>
-                </h2>
-                <div id="module{{ module.id }}" class="accordion-collapse collapse" 
-                     data-bs-parent="#contentAccordion">
-                    <div class="accordion-body pt-0">
-                        <p class="text-muted mb-3">{{ module.description }}</p>
-                        
-                        <div class="accordion" id="lessonAccordion{{ module.id }}">
-                            {% for lesson in module.children %}
-                            <div class="accordion-item border-0 mb-2 rounded-2">
-                                <h3 class="accordion-header">
-                                    <button class="accordion-button collapsed py-2" type="button" 
-                                            data-bs-toggle="collapse" data-bs-target="#lesson{{ lesson.id }}">
-                                        <i class="fas fa-file-alt me-2 text-info"></i>
-                                        {{ lesson.title }}
-                                    </button>
-                                </h3>
-                                <div id="lesson{{ lesson.id }}" class="accordion-collapse collapse" 
-                                     data-bs-parent="#lessonAccordion{{ module.id }}">
-                                    <div class="accordion-body">
-                                        <p class="text-muted mb-3">{{ lesson.description }}</p>
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <a href="/projects/{{ project.id }}/lessons/{{ lesson.id }}"
-                                                class="btn btn-sm btn primary-btn">
-                                                <i class="fas fa-eye me-1"></i> View Lesson
-                                            </a>
-                                            <span class="badge bg-light text-dark">
-                                                {{ lesson.children|length }} topics
-                                            </span>
-                                        </div>
+        <hr class="my-4">
 
-                                        <ul class="list-group list-group-flush">
-                                            {% for topic in lesson.children %}
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h6 class="mb-0">{{ topic.title }}</h6>
-                                                    <small class="text-muted">{{ topic.description }}</small>
-                                                </div>
-                                                <a href="/projects/{{ project.id }}/topics/{{ topic.id }}" 
-                                                   class="btn btn-sm btn-outline-success">
-                                                    <i class="fas fa-external-link-alt"></i>
+        <!-- Parsed Content Section -->
+        <div class="mb-5">
+            <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-file-alt me-3 text-danger"></i>
+                <h4 class="mb-0">Course Syllabus</h4>
+            </div>
+
+            {% if course.content %}
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ course.content.title }}</h5>
+                    <p class="card-text text-muted">{{ course.content.description }}</p>
+                </div>
+            </div>
+
+            <div class="accordion" id="contentAccordion">
+                {% for module in course.content.children %}
+                <div class="accordion-item border-0 mb-3 shadow-sm rounded-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#module{{ module.id }}">
+                            <i class="fas fa-book me-2 text-warning"></i>
+                            <strong>{{ module.title }}</strong>
+                        </button>
+                    </h2>
+                    <div id="module{{ module.id }}" class="accordion-collapse collapse"
+                        data-bs-parent="#contentAccordion">
+                        <div class="accordion-body pt-0">
+                            <p class="text-muted mb-3">{{ module.description }}</p>
+
+                            <div class="accordion" id="lessonAccordion{{ module.id }}">
+                                {% for lesson in module.children %}
+                                <div class="accordion-item border-0 mb-2 rounded-2">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button collapsed py-2" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#lesson{{ lesson.id }}">
+                                            <i class="fas fa-file-alt me-2 text-info"></i>
+                                            {{ lesson.title }}
+                                        </button>
+                                    </h3>
+                                    <div id="lesson{{ lesson.id }}" class="accordion-collapse collapse"
+                                        data-bs-parent="#lessonAccordion{{ module.id }}">
+                                        <div class="accordion-body">
+                                            <p class="text-muted mb-3">{{ lesson.description }}</p>
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <a href="/projects/{{ project.id }}/lessons/{{ lesson.id }}"
+                                                    class="btn btn-sm btn primary-btn">
+                                                    <i class="fas fa-eye me-1"></i> View Lesson
                                                 </a>
-                                            </li>
-                                            {% endfor %}
-                                        </ul>
+                                                <span class="badge bg-light text-dark">
+                                                    {{ lesson.children|length }} topics
+                                                </span>
+                                            </div>
+
+                                            <ul class="list-group list-group-flush">
+                                                {% for topic in lesson.children %}
+                                                <li
+                                                    class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-0">{{ topic.title }}</h6>
+                                                        <small class="text-muted">{{ topic.description }}</small>
+                                                    </div>
+                                                    <a href="/projects/{{ project.id }}/topics/{{ topic.id }}"
+                                                        class="btn btn-sm btn-outline-success">
+                                                        <i class="fas fa-external-link-alt"></i>
+                                                    </a>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+
+            {% else %}
+            <div class="text-center py-5 bg-light rounded-3">
+                <i class="fas fa-file-search fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No Content Yet</h4>
+                <p class="text-muted">This course hasn't been processed or contains no content.</p>
+                <button class="btn btn-outline-primary">
+                    <i class="fas fa-sync me-1"></i> Try Reprocessing
+                </button>
+            </div>
+            {% endif %}
         </div>
 
-        {% else %}
-        <div class="text-center py-5 bg-light rounded-3">
-            <i class="fas fa-file-search fa-3x text-muted mb-3"></i>
-            <h4 class="text-muted">No Content Yet</h4>
-            <p class="text-muted">This course hasn't been processed or contains no content.</p>
-            <button class="btn btn-outline-primary">
-                <i class="fas fa-sync me-1"></i> Try Reprocessing
-            </button>
-        </div>
-        {% endif %}
-    </div>
+        <!-- Generated Lessons Section -->
+        <div class="mb-5">
+            <hr class="my-5">
+            <div class="d-flex align-items-center mb-4">
+                <i class="fas fa-book-open me-3 text-danger"></i>
+                <h4 class="mb-0">Generated Material for Lessons</h4>
+            </div>
 
-    <!-- Generated Lessons Section -->
-    <div class="mb-5">
-        <hr class="my-5">
-        <div class="d-flex align-items-center mb-4">
-            <i class="fas fa-book-open me-3 text-danger"></i>
-            <h4 class="mb-0">Generated Material for Lessons</h4>
-        </div>
-
-        {% if course.content.get_all_lessons() %}
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            {% for version in course.content.get_all_lessons() %}
-            <div class="col">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-header bg-light">
-                        <h5 class="card-title mb-0">{{ version.title }}</h5>
-                    </div>
-                    <div class="card-body">
-                        <span class="badge bg-info text-dark mb-2">
-                            Level: {{ version.lessonSetting.experienceLevel }}
-                        </span>
-                        <p class="card-text text-muted small">{{ version.description|truncate(100) }}</p>
-                    </div>
-                    <div class="card-footer bg-transparent">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">
-                                <i class="far fa-clock me-1"></i>
-                                {{ version.generatedAt.strftime('%b %d, %Y') }}
-                            </small>
-                            <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}" 
-                               class="btn btn-sm btn primary-btn">
-                                <i class="fas fa-external-link-alt me-1"></i> View
-                            </a>
+            {% if course.content.get_all_lessons() %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for version in course.content.get_all_lessons() %}
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0">{{ version.title }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <span class="badge bg-info text-dark mb-2">
+                                Level: {{ version.lessonSetting.experienceLevel }}
+                            </span>
+                            <p class="card-text text-muted small">{{ version.description|truncate(100) }}</p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="far fa-clock me-1"></i>
+                                    {{ version.generatedAt.strftime('%b %d, %Y') }}
+                                </small>
+                                <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}"
+                                    class="btn btn-sm btn primary-btn">
+                                    <i class="fas fa-external-link-alt me-1"></i> View
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-        {% else %}
-        <div class="text-center py-4 bg-light rounded-3">
-            <i class="fas fa-book fa-2x text-muted mb-3"></i>
-            <h5 class="text-muted">No Generated Lessons Yet</h5>
-            <p class="text-muted small">Generate lesson materials to see them here</p>
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- Generated Topics Section -->
-    <div class="mb-4">
-        <hr class="my-5">
-        <div class="d-flex align-items-center mb-4">
-            <i class="fas fa-sticky-note me-3 text-danger"></i>
-            <h4 class="mb-0">Generated Material for Topics</h4>
+            {% else %}
+            <div class="text-center py-4 bg-light rounded-3">
+                <i class="fas fa-book fa-2x text-muted mb-3"></i>
+                <h5 class="text-muted">No Generated Lessons Yet</h5>
+                <p class="text-muted small">Generate lesson materials to see them here</p>
+            </div>
+            {% endif %}
         </div>
 
-        {% if course.content.get_all_topics() %}
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            {% for version in course.content.get_all_topics() %}
-            <div class="col">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-header bg-light">
-                        <h5 class="card-title mb-0">{{ version.title }}</h5>
-                    </div>
-                    <div class="card-body">
-                        <span class="badge bg-info text-dark mb-2">
-                            Level: {{ version.lessonSetting.experienceLevel }}
-                        </span>
-                        <p class="card-text text-muted small">{{ version.description|truncate(100) }}</p>
-                    </div>
-                    <div class="card-footer bg-transparent">
-                        <div class="card-footer bg-white border-0">
-    <small class="text-muted d-block mb-2">
-        <i class="far fa-clock me-1"></i>
-        {{ version.generatedAt.strftime('%b %d, %Y') }}
-    </small>
-    <a href="/projects/{{ project.id }}/documents/{{ doc.id }}/gen_material/{{ version.id }}" 
-       class="btn btn-sm btn-outline-primary w-100">
-        <i class="fas fa-external-link-alt me-1"></i> View
-    </a>
-</div>
+        <!-- Generated Topics Section -->
+        <div class="mb-4">
+            <hr class="my-5">
+            <div class="d-flex align-items-center mb-4">
+                <i class="fas fa-sticky-note me-3 text-danger"></i>
+                <h4 class="mb-0">Generated Material for Topics</h4>
+            </div>
+
+            {% if course.content.get_all_topics() %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for version in course.content.get_all_topics() %}
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0">{{ version.title }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <span class="badge bg-info text-dark mb-2">
+                                Level: {{ version.lessonSetting.experienceLevel }}
+                            </span>
+                            <p class="card-text text-muted small">{{ version.description|truncate(100) }}</p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="card-footer bg-white border-0">
+                                <small class="text-muted d-block mb-2">
+                                    <i class="far fa-clock me-1"></i>
+                                    {{ version.generatedAt.strftime('%b %d, %Y') }}
+                                </small>
+                                <a href="/projects/{{ project.id }}/documents/{{ doc.id }}/gen_material/{{ version.id }}"
+                                    class="btn btn-sm btn-outline-primary w-100">
+                                    <i class="fas fa-external-link-alt me-1"></i> View
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            {% else %}
+            <div class="text-center py-4 bg-light rounded-3">
+                <i class="fas fa-sticky-note fa-2x text-muted mb-3"></i>
+                <h5 class="text-muted">No Generated Topics Yet</h5>
+                <p class="text-muted small">Generate topic materials to see them here</p>
+            </div>
+            {% endif %}
         </div>
-        {% else %}
-        <div class="text-center py-4 bg-light rounded-3">
-            <i class="fas fa-sticky-note fa-2x text-muted mb-3"></i>
-            <h5 class="text-muted">No Generated Topics Yet</h5>
-            <p class="text-muted small">Generate topic materials to see them here</p>
-        </div>
-        {% endif %}
     </div>
-</div>
 
 </div>
 <style>
-
     .del.btn-danger-delete {
         background-color: #dc3545;
         color: white;
@@ -223,44 +233,56 @@
         border: none;
         border-radius: 6px;
     }
-     .accordion-button {
+
+    .accordion-button {
         padding: 0.5rem 1rem;
         font-size: 0.875rem;
         background-color: white;
         color: #212529;
     }
+
     .accordion-button:not(.collapsed) {
         background-color: white;
         color: #212529;
         box-shadow: none;
     }
+
     .accordion-button:focus {
         box-shadow: none;
-        border-color: rgba(0,0,0,.125);
+        border-color: rgba(0, 0, 0, .125);
     }
+
     .accordion-body {
         padding: 0.5rem 1rem;
     }
+
     .smaller {
         font-size: 0.8rem;
     }
-    .card, .accordion-item, .list-group-item {
+
+    .card,
+    .accordion-item,
+    .list-group-item {
         transition: all 0.2s ease;
     }
+
     .card:hover {
-        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     }
+
     .list-group-item:hover {
         background-color: #f8f9fa;
     }
+
     .badge {
         font-weight: normal;
     }
- @media (min-width: 992px) {
-    .row-cols-lg-3>* {
-        flex: 0 0 auto;
-        width: 50%;
+
+    @media (min-width: 992px) {
+        .row-cols-lg-3>* {
+            flex: 0 0 auto;
+            width: 50%;
+        }
     }
-}
 </style>
 {% endblock %}

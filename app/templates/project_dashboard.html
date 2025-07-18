@@ -1,12 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="project-dashboard">
-  <button onclick="window.history.back()" class="btn-back">
-    <i class="fas fa-arrow-left"></i> Back
-  </button>
-  <button class="del btn-danger-delete" data-bs-toggle="modal" data-bs-target="#deleteCourseModal">
-    <i class="fas fa-trash-alt me-1"></i> Delete Project
-  </button>
+  <div class="d-flex justify-content-between align-items-center my-3">
+    <!-- Back Button (left) -->
+    <button onclick="window.history.back()" class="btn-back">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
+
+    <!-- Delete Button (right) in a form -->
+    <form action="/projects/{{ project.id }}/delete" method="POST"
+      onsubmit="return confirm('Are you sure you want to delete this project? This action cannot be undone.');">
+      <button type="submit" class="btn btn-danger">
+        <i class="fas fa-trash-alt me-1"></i> Delete Project
+      </button>
+    </form>
+  </div>
+
+
+
   <!-- Project Header -->
   <div class="project-header">
     <div class="project-meta">
