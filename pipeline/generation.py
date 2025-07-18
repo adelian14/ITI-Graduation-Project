@@ -63,16 +63,16 @@ def generate_course(course: Course):
 
 def full_generation(lesson: LessonVersion | Topic):
     lesson_string = lesson.rawLesson or lesson.rawTopic
-    #setting = lesson.lessonSetting
-    #learner = LearnerProfile()
-    #learner.age = setting.ageGroup
-    #learner.experience = setting.experienceLevel
-    #learner.style = setting.explanatoryStyle
-    #learner.tone = setting.teachingTone
-    #crew = NarrativeGenerationCrew()
-    #outputs = crew.run(lesson_string, learner)
-    #lesson.narrative = crew.get_agent_output('Audience Personalization & Learning Experience Designer',outputs)
-    #lesson.videoScript = crew.get_agent_output('Markdown Documentation Specialist', outputs)
+    setting = lesson.lessonSetting
+    learner = LearnerProfile()
+    learner.age = setting.ageGroup
+    learner.experience = setting.experienceLevel
+    learner.style = setting.explanatoryStyle
+    learner.tone = setting.teachingTone
+    crew = NarrativeGenerationCrew()
+    outputs = crew.run(lesson_string, learner)
+    lesson.narrative = crew.get_agent_output('Audience Personalization & Learning Experience Designer',outputs)
+    lesson.videoScript = crew.get_agent_output('Markdown Documentation Specialist', outputs)
     
     slides_crew = SlidesGenerationCrew()
     result = slides_crew.run(lesson_string)

@@ -1,18 +1,83 @@
 {% extends 'base.html' %}
 {% block content %}
-  <div class="container py-5">
-    <h2 class="text-center text-danger mb-4">My Projects</h2>
+  <div class="container py-4">
+    <h2 class="text-center mb-4" style="color: #8B0000;">My Projects</h2>
 
     {% if projects %}
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="row row-cols-1 row-cols-md-2 g-3">
         {% for project in projects %}
-          {% include 'components/project_card.html' %}
+          <div class="col">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body p-4">
+                <h5 class="card-title fw-bold mb-3">{{ project.title }}</h5>
+                
+                <!-- Progress bar -->
+                <div class="progress mb-2" style="height: 6px;">
+                  <div class="progress-bar 
+                      {% if project.progress == 100 %}
+                          bg-success
+                      {% else %}
+                          bg-primary
+                      {% endif %}" 
+                      role="progressbar" 
+                      aria-valuenow="{{ project.progress }}" 
+                      aria-valuemin="0" 
+                      aria-valuemax="100">
+                  </div>
+                </div>
+                
+                <!-- Progress text -->
+                <p class="mb-1 small text-muted">
+                  {{ project.description }}
+                </p>
+                
+                <!-- Time spent 
+                <p class="mb-2 small text-muted">
+                  {{ project.time_spent }} hours
+                </p>
+                
+               
+                <div class="mb-3">
+                  {% if project.progress == 100 %}
+                    <span class="badge bg-success bg-opacity-10 text-success">
+                      Certificate Earned
+                    </span>
+                  {% else %}
+                    <span class="badge bg-warning bg-opacity-10 text-warning">
+                      In Progress
+                    </span>
+                  {% endif %}
+                </div> -->
+                
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between pt-2">
+                  <a href="/projects/{{ project.id }}" class="btn btn-primary btn-sm px-3">Continue</a>
+                </div>
+              </div>
+            </div>
+          </div>
         {% endfor %}
       </div>
     {% else %}
-      <p class="text-center text-muted fs-4">You have no projects yet.</p>
+      <p class="text-center text-muted fs-5 mt-5">You have no projects yet.</p>
     {% endif %}
   </div>
 
-  <a href="/create" class="btn-fab">+</a>
+  <!-- Floating Action Button -->
+  <a href="/create" class="btn btn-danger rounded-circle shadow" style="
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        font-weight: 300;
+        line-height: 1;
+        background-color:#8B0000;
+    ">
+    +
+  </a>
 {% endblock %}

@@ -1,12 +1,43 @@
 {% extends 'base.html' %}
 {% block content %}
-  <div class="container text-center mt-5">
-    <h1 class="mb-4 text-danger">TeachFlow</h1>
-    <p class="lead text-muted mb-5">An AI-powered platform for generating, organizing, and managing full teaching-ready courses from raw content.</p>
 
-    <div class="d-grid gap-3 col-6 mx-auto">
-      <a href="/create" class="btn btn-red btn-lg">Create Project</a>
-      <a href="/projects" class="btn btn-outline-danger btn-lg">My Projects</a>
-    </div>
-  </div>
+  <!-- Welcome Section -->
+<div class="step-content active" id="step1Content">
+                <div class="welcome-card">
+                    <div class="welcome-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h2 class="welcome-title">Transform Your Course Materials with AI</h2>
+                    <p class="welcome-description">
+                        Our AI-powered tool helps instructors quickly convert raw educational materials 
+                        into engaging teaching resources. Simply upload your files and choose how you'd 
+                        like them transformed.
+                    </p>
+                    
+                    <div class="feature-list">
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-sliders-h"></i>
+                            </div>
+                            <h3 class="feature-title">Presentation Maker</h3>
+                            <p class="feature-desc">Create ready-to-use slides automatically</p>
+                        </div>
+                        
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <h3 class="feature-title">Story Narrator</h3>
+                            <p class="feature-desc">Convert materials into compelling narratives</p>
+                        </div>
+                    </div>
+                     <div class="action-buttons">
+                        <a class="btn btn-primary" id="startBtn" href="/projects">
+                            <i class="fas fa-arrow-right"></i> Get Started
+                        </a>
+                    </div>
+            </div>
+</div>
 {% endblock %}
