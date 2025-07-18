@@ -1,43 +1,161 @@
 {% extends 'base.html' %}
 {% block content %}
-
-  <!-- Welcome Section -->
-<div class="step-content active" id="step1Content">
-                <div class="welcome-card">
-                    <div class="welcome-icon">
-                        <i class="fas fa-magic"></i>
-                    </div>
-                    <h2 class="welcome-title">Transform Your Course Materials with AI</h2>
-                    <p class="welcome-description">
-                        Our AI-powered tool helps instructors quickly convert raw educational materials 
-                        into engaging teaching resources. Simply upload your files and choose how you'd 
-                        like them transformed.
-                    </p>
-                    
-                    <div class="feature-list">
-                        
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-sliders-h"></i>
-                            </div>
-                            <h3 class="feature-title">Presentation Maker</h3>
-                            <p class="feature-desc">Create ready-to-use slides automatically</p>
-                        </div>
-                        
-                        
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-book-open"></i>
-                            </div>
-                            <h3 class="feature-title">Story Narrator</h3>
-                            <p class="feature-desc">Convert materials into compelling narratives</p>
-                        </div>
-                    </div>
-                     <div class="action-buttons">
-                        <a class="btn btn-primary" id="startBtn" href="/projects">
-                            <i class="fas fa-arrow-right"></i> Get Started
-                        </a>
-                    </div>
+<div class="explanation-workflow">
+    <!-- Step 1: Welcome -->
+    <div class="explanation-step active" id="step1">
+        <div class="explanation-card">
+            <div class="progress-indicator">
+                <div class="progress-step active">1</div>
+                <div class="progress-bar"></div>
+                <div class="progress-step">2</div>
+                <div class="progress-bar"></div>
+                <div class="progress-step">3</div>
             </div>
+            
+            <div class="step-icon">
+                <div class="icon-wrapper">
+                    <i class="fas fa-upload"></i>
+                </div>
+            </div>
+            <h2 class="step-title">Upload Your Materials</h2>
+            <p class="step-description">
+                Start by providing your course materials - lecture notes, textbooks, or research papers. 
+                Our system accepts various formats including PDFs, Word documents, and PowerPoint files.
+            </p>
+            <div class="step-visual">
+                <div class="file-visual">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Lecture.pdf</span>
+                </div>
+                <div class="arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="ai-visual">
+                    <i class="fas fa-robot"></i>
+                </div>
+            </div>
+            <button class="btn next-btn">Continue <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Step 2: Choose Transformation -->
+    <div class="explanation-step" id="step2">
+        <div class="explanation-card">
+            <div class="progress-indicator">
+                <div class="progress-step completed">1</div>
+                <div class="progress-bar active"></div>
+                <div class="progress-step active">2</div>
+                <div class="progress-bar"></div>
+                <div class="progress-step">3</div>
+            </div>
+            
+            <div class="step-icon">
+                <div class="icon-wrapper">
+                    <i class="fas fa-sliders-h"></i>
+                </div>
+            </div>
+            <h2 class="step-title">Select Transformation</h2>
+            <p class="step-description">
+                Choose how you'd like your materials transformed. Pick between creating engaging 
+                presentations or compelling narrative formats.
+            </p>
+            
+            <div class="option-cards">
+                <div class="option">
+                    <div class="option-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3>Presentation Maker</h3>
+                    <p>Automatically generates slides with visuals and speaker notes</p>
+                    <div class="option-highlight"></div>
+                </div>
+                
+                <div class="option">
+                    <div class="option-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Story Narrator</h3>
+                    <p>Transforms content into engaging narratives with examples</p>
+                    <div class="option-highlight"></div>
+                </div>
+            </div>
+            
+            <div class="step-buttons">
+                <button class="btn prev-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <button class="btn next-btn">Continue <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 3: Results -->
+    <div class="explanation-step" id="step3">
+        <div class="explanation-card">
+            <div class="progress-indicator">
+                <div class="progress-step completed">1</div>
+                <div class="progress-bar active"></div>
+                <div class="progress-step completed">2</div>
+                <div class="progress-bar active"></div>
+                <div class="progress-step active">3</div>
+            </div>
+            
+            <div class="step-icon">
+                <div class="icon-wrapper">
+                    <i class="fas fa-magic"></i>
+                </div>
+            </div>
+            <h2 class="step-title">Receive Transformed Content</h2>
+            <p class="step-description">
+                Get your newly transformed educational materials ready to use in your classroom. 
+                The AI maintains all key concepts while making them more engaging for students.
+            </p>
+            
+            <div class="result-visual">
+                <div class="result-type" id="presentation-result">
+                    <div class="result-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h4>Beautiful Presentation</h4>
+                    <p>With slides, visuals, and speaker notes</p>
+                </div>
+                <div class="result-type" id="narrative-result">
+                    <div class="result-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <h4>Engaging Narrative</h4>
+                    <p>With storytelling elements and examples</p>
+                </div>
+            </div>
+            
+            <div class="step-buttons">
+                <button class="btn prev-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <a href="/projects" class="btn primary-btn">Try It Now <i class="fas fa-rocket"></i></a>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const steps = document.querySelectorAll('.explanation-step');
+        let currentStep = 0;
+        
+        // Next button functionality
+        document.querySelectorAll('.next-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                steps[currentStep].classList.remove('active');
+                currentStep++;
+                steps[currentStep].classList.add('active');
+            });
+        });
+        
+        // Previous button functionality
+        document.querySelectorAll('.prev-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                steps[currentStep].classList.remove('active');
+                currentStep--;
+                steps[currentStep].classList.add('active');
+            });
+        });
+    });
+</script>
 {% endblock %}

@@ -1,255 +1,523 @@
 {% extends 'base.html' %}
 {% block content %}
-  <div class="container py-4">
-    <h2 class="mb-4" style="color: #8B0000;">My Projects</h2>
+<div class="container py-4">
+    <!-- Back Button -->
+    <button onclick="window.history.back()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+
+    <h2 class="page-header">My Projects</h2>
 
     {% if projects %}
-      <div class="project-list">
+    <div class="project-list">
         {% for project in projects %}
-          <div class="project-card">
+        <div class="project-card">
             <div class="project-content">
-              <!-- Delete button (visible on hover) -->
-              <button class="btn-delete" title="Delete project">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-              
-              <h3 class="project-title">{{ project.title }}</h3>
-              <p class="project-description">{{ project.description }}</p>
-              
-              <div class="project-footer">
-                <span class="project-status">
-                  {% if project.progress == 100 %}
-                    <i class="fas fa-check-circle"></i> Completed
-                  {% else %}
-                    <i class="fas fa-spinner"></i> In Progress
-                  {% endif %}
-                </span>
-                <div class="project-actions">
-                  <a href="/projects/{{ project.id }}" class="btn-continue" data-project-id="{{ project.id }}">
-                    <span class="btn-text">Continue</span>
-                    <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
-                    <span class="btn-loader">
-                      <i class="fas fa-spinner fa-spin"></i>
+                <!-- Delete button (visible on hover) -->
+                <button class="btn-delete" title="Delete project">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                
+                <h3 class="project-title">{{ project.title }}</h3>
+                <p class="project-description">{{ project.description }}</p>
+                
+                <div class="project-footer">
+                    <span class="project-status">
+                        {% if project.progress == 100 %}
+                        <i class="fas fa-check-circle"></i> Completed
+                        {% else %}
+                        <i class="fas fa-hourglass-half"></i> In Progress
+                        {% endif %}
                     </span>
-                  </a>
+                    <div class="project-actions">
+                        <a href="/projects/{{ project.id }}" class="btn-continue" data-project-id="{{ project.id }}">
+                            <span class="btn-text">Continue</span>
+                            <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
+                            <span class="btn-loader">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                            <span class="btn-upload">
+                                <i class="fas fa-cloud-upload-alt"></i> Uploading...
+                            </span>
+                        </a>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
+        </div>
         {% endfor %}
-      </div>
+    </div>
     {% else %}
-      <div class="empty-state">
+    <div class="empty-state">
         <i class="fas fa-folder-open"></i>
         <p>You have no projects yet.</p>
-      </div>
+        <a href="/create" class="btn-create">Create Your First Project</a>
+    </div>
     {% endif %}
-  </div>
+</div>
 
-  <!-- Floating Action Button -->
-  <a href="/create" class="fab">
+<!-- Floating Action Button -->
+<a href="/create" class="fab">
     <i class="fas fa-plus"></i>
-  </a>
+</a>
 
-  <style>
+<style>
     /* Main container */
     .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding-bottom: 80px;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem;
+        padding-bottom: 100px;
+    }
+    
+    /* Back button */
+    .btn-back {
+        background: var(--light-gray);
+        border: none;
+        color: var(--primary-color);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .btn-back:hover {
+        background: #e0e0e0;
+        transform: translateX(-2px);
+    }
+    
+    /* Page header */
+    .page-header {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+    
+    .page-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: var(--primary-color);
+        border-radius: 3px;
     }
     
     /* Project list */
     .project-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
     }
     
     /* Project card */
     .project-card {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      overflow: hidden;
-      transition: all 0.3s ease;
-      position: relative;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+        border: 1px solid rgba(91, 28, 28, 0.1);
     }
     
     .project-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
     }
     
     .project-content {
-      padding: 20px;
-      position: relative;
+        padding: 1.5rem;
+        position: relative;
     }
     
     /* Project title */
     .project-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #333;
-      text-transform: capitalize;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+        color: var(--dark-color);
+        padding-right: 2rem;
     }
     
     /* Project description */
     .project-description {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 16px;
-      line-height: 1.5;
+        font-size: 0.95rem;
+        color: var(--text-color);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
     }
     
     /* Project footer */
     .project-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     
     /* Status badge */
     .project-status {
-      font-size: 13px;
-      padding: 4px 8px;
-      border-radius: 4px;
-      background-color: #f0f0f0;
-      color: #555;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        background-color: var(--light-gray);
+        color: var(--text-color);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
     }
     
     .project-status i {
-      margin-right: 4px;
+        font-size: 0.9rem;
+    }
+    
+    .project-status .fa-check-circle {
+        color: #28a745;
+    }
+    
+    .project-status .fa-hourglass-half {
+        color: var(--primary-color);
     }
     
     /* Continue button with loading state */
     .btn-continue {
-      background-color: #8B0000;
-      color: white;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: 13px;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      position: relative;
-      overflow: hidden;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 80px;
-      height: 32px;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 100px;
+        height: 36px;
+        box-shadow: 0 2px 8px rgba(139, 0, 0, 0.2);
     }
     
     .btn-continue:hover {
-      background-color: #6d0000;
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
     }
     
-    .btn-text, .btn-icon, .btn-loader {
-      transition: all 0.2s ease;
+    .btn-text, .btn-icon, .btn-loader, .btn-upload {
+        transition: all 0.2s ease;
     }
     
-    .btn-loader {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0;
+    .btn-icon {
+        margin-left: 0.5rem;
+    }
+    
+    .btn-loader, .btn-upload {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
     
     .btn-continue.loading .btn-text,
     .btn-continue.loading .btn-icon {
-      opacity: 0;
-      transform: translateY(5px);
+        opacity: 0;
+        transform: translateY(5px);
     }
     
     .btn-continue.loading .btn-loader {
-      opacity: 1;
+        opacity: 1;
+    }
+    
+    .btn-continue.uploading .btn-text,
+    .btn-continue.uploading .btn-icon {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    
+    .btn-continue.uploading .btn-upload {
+        opacity: 1;
     }
     
     /* Delete button (hidden by default) */
     .btn-delete {
-      background: none;
-      border: none;
-      color: #8B0000;
-      opacity: 0;
-      cursor: pointer;
-      padding: 6px;
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      transition: opacity 0.2s ease;
+        background: none;
+        border: none;
+        color: var(--primary-color);
+        opacity: 0;
+        cursor: pointer;
+        padding: 0.5rem;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        transition: all 0.3s ease;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .project-card:hover .btn-delete {
-      opacity: 0.7;
+        opacity: 0.7;
+        background: rgba(139, 0, 0, 0.1);
     }
     
     .btn-delete:hover {
-      opacity: 1 !important;
+        opacity: 1 !important;
+        background: rgba(139, 0, 0, 0.2);
+    }
+    
+    /* Delete confirmation modal */
+    .delete-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .delete-modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+    
+    .delete-modal h3 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .delete-modal p {
+        margin-bottom: 1.5rem;
+        color: var(--text-color);
+    }
+    
+    .delete-modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .delete-confirm-btn {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .delete-confirm-btn:hover {
+        background: var(--secondary-color);
+    }
+    
+    .delete-cancel-btn {
+        background: var(--light-gray);
+        color: var(--text-color);
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .delete-cancel-btn:hover {
+        background: #e0e0e0;
     }
     
     /* Empty state */
     .empty-state {
-      text-align: center;
-      padding: 40px 0;
-      color: #888;
+        text-align: center;
+        padding: 3rem 0;
+        color: var(--text-color);
+        grid-column: 1 / -1;
     }
     
     .empty-state i {
-      font-size: 48px;
-      margin-bottom: 16px;
-      opacity: 0.3;
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        color: rgba(91, 28, 28, 0.2);
+    }
+    
+    .empty-state p {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .btn-create {
+        background: var(--primary-color);
+        color: white;
+        padding: 0.8rem 1.8rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-block;
+        box-shadow: 0 2px 8px rgba(139, 0, 0, 0.2);
+    }
+    
+    .btn-create:hover {
+        background: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
     }
     
     /* Floating action button */
     .fab {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 56px;
-      height: 56px;
-      background-color: #8B0000;
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      transition: all 0.2s ease;
-      z-index: 100;
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 60px;
+        height: 60px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        z-index: 100;
+        font-size: 1.2rem;
     }
     
     .fab:hover {
-      transform: scale(1.05);
+        transform: scale(1.1);
+        background-color: var(--secondary-color);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     }
-  </style>
+    
+    @media (max-width: 768px) {
+        .project-list {
+            grid-template-columns: 1fr;
+        }
+        
+        .container {
+            padding: 1.5rem;
+            padding-bottom: 100px;
+        }
+        
+        .page-header {
+            font-size: 1.5rem;
+        }
+        
+        .delete-modal-content {
+            width: 85%;
+        }
+    }
+</style>
 
-  <script>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Handle continue button clicks
-      document.querySelectorAll('.btn-continue').forEach(button => {
-        button.addEventListener('click', function(e) {
-          // Show loading state
-          this.classList.add('loading');
-          
-          // This will ensure loading state stops when page unloads
-          const stopLoading = function() {
-            button.classList.remove('loading');
-            window.removeEventListener('beforeunload', stopLoading);
-          };
-          
-          window.addEventListener('beforeunload', stopLoading);
-          
-          // Fallback in case navigation doesn't occur
-          setTimeout(() => {
-            if (button.classList.contains('loading')) {
-              button.classList.remove('loading');
-              window.removeEventListener('beforeunload', stopLoading);
-            }
-          }, 3000); // Remove after 3 seconds if still loading
+        // Handle continue button clicks
+        document.querySelectorAll('.btn-continue').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // First show loading state
+                this.classList.add('loading');
+                
+                // After 1 second, switch to upload state
+                setTimeout(() => {
+                    this.classList.remove('loading');
+                    this.classList.add('uploading');
+                    
+                    // After upload completes (simulated with 2 seconds)
+                    setTimeout(() => {
+                        // Remove uploading state and navigate
+                        this.classList.remove('uploading');
+                        window.location.href = this.getAttribute('href');
+                    }, 2000);
+                    
+                }, 1000);
+            });
         });
-      });
+        
+        // Create delete confirmation modal
+        const deleteModal = document.createElement('div');
+        deleteModal.className = 'delete-modal';
+        deleteModal.innerHTML = `
+            <div class="delete-modal-content">
+                <h3>Delete Project</h3>
+                <p>Are you sure you want to delete this project? This action cannot be undone.</p>
+                <div class="delete-modal-buttons">
+                    <button class="delete-cancel-btn">Cancel</button>
+                    <button class="delete-confirm-btn">Delete</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(deleteModal);
+        
+        // Store the project to be deleted
+        let projectToDelete = null;
+        
+        // Handle delete button clicks
+        document.querySelectorAll('.btn-delete').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                projectToDelete = this.closest('.project-card');
+                deleteModal.style.display = 'flex';
+            });
+        });
+        
+        // Handle modal button clicks
+        deleteModal.querySelector('.delete-cancel-btn').addEventListener('click', function() {
+            deleteModal.style.display = 'none';
+            projectToDelete = null;
+        });
+        
+        deleteModal.querySelector('.delete-confirm-btn').addEventListener('click', function() {
+            if (projectToDelete) {
+                // Here you would typically make an API call to delete the project
+                // For now, we'll just remove the card from the DOM
+                projectToDelete.remove();
+                deleteModal.style.display = 'none';
+                projectToDelete = null;
+                
+                // Check if all projects are deleted to show empty state
+                if (document.querySelectorAll('.project-card').length === 0) {
+                    document.querySelector('.project-list').innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-folder-open"></i>
+                            <p>You have no projects yet.</p>
+                            <a href="/create" class="btn-create">Create Your First Project</a>
+                        </div>
+                    `;
+                }
+            }
+        });
+        
+        // Close modal when clicking outside
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === deleteModal) {
+                deleteModal.style.display = 'none';
+                projectToDelete = null;
+            }
+        });
     });
-  </script>
+</script>
 {% endblock %}
