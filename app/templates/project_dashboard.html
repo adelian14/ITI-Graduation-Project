@@ -4,13 +4,14 @@
     <button onclick="window.history.back()" class="btn-back">
         <i class="fas fa-arrow-left"></i> Back
     </button>
-
+   
     <!-- Project Header -->
     <div class="project-header">
         <div class="project-meta">
             <span class="badge"><i class="fas fa-book"></i> Project</span>
             <span><i class="fas fa-calendar-alt"></i> Created: {{ project.createdAt.strftime('%B %d, %Y') }}</span>
         </div>
+        
         <h1 class="project-title">{{ project.title }}</h1>
         <p class="project-description">{{ project.description }}</p>
     </div>
@@ -35,8 +36,8 @@
                         <div class="upload-icon">
                             <i class="fas fa-cloud-upload-alt"></i>
                         </div>
-                        <h3>Drag & drop files here</h3>
-                        <p>or click to browse your computer</p>
+                       
+          
                         <input type="file" class="file-input" name="file" required multiple>
                     </div>
                     <div class="selected-files" style="display: none;">
@@ -97,6 +98,7 @@
                         <tbody>
                             {% for course in project.courses %}
                                 {% include 'components/course_row.html' %}
+                                
                             {% endfor %}
                         </tbody>
                     </table>
@@ -164,7 +166,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><i class="fas fa-exclamation-triangle text-danger me-2"></i> Delete Project</h5>
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i> Delete Project</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -282,7 +284,7 @@
     .upload-prompt {
         border: 2px dashed rgba(91, 28, 28, 0.3);
         border-radius: 12px;
-        padding: 3rem 2rem;
+       
         text-align: center;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -294,7 +296,7 @@
     }
     
     .upload-icon {
-        font-size: 2.5rem;
+        font-size: 1.5rem;
         color: var(--primary-color);
         margin-bottom: 1rem;
     }
@@ -439,7 +441,11 @@
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(91, 28, 28, 0.2);
     }
-    
+    .text-danger {
+    --bs-text-opacity: 1;
+    color: var(--primary-color)
+  }
+
     /* Responsive Adjustments */
     @media (max-width: 992px) {
         .project-dashboard {
@@ -496,6 +502,7 @@
         box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         border: 1px solid rgba(91, 28, 28, 0.1);
     }
+    
 </style>
 
 <script>
