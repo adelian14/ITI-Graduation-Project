@@ -1,6 +1,11 @@
+<html>
 {% extends 'base.html' %}
 {% block content %}
-    <h2 class="text-danger mb-4">Create New Course</h2>
+<div class="project-dashboard">
+    <button onclick="window.history.back()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+    <h2 class="page-header">Create New Course</h2>
 
     <form method="POST" action="">
       <div class="mb-3">
@@ -27,8 +32,16 @@
         </select>
       </div>
 
-      <button type="submit" class="btn btn-red">
+      <button type="submit" class="btn primary-btn">
         <i class="fas fa-plus me-1"></i> Create Course
       </button>
     </form>
+  </div>
+  <style>
+  .form-label {
+    margin-bottom: .5rem;
+    font-weight: bold;
+}
+</style>
+
 {% endblock %}

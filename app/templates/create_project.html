@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2 class="text-center mb-4" style="color: #8B0000;">Create New Project</h2>
+<div class="project-dashboard">
+    <button onclick="window.history.back()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+    <h2 class="page-header" >Create New Project</h2>
 
     <form method="POST" action="/create" class="mx-auto" style="max-width: 600px;">
+      <div class="div-form">
       <div class="mb-3">
         <label for="title" class="form-label">Project Title</label>
         <input type="text" class="form-control" id="title" name="title" required>
@@ -12,10 +17,19 @@
         <label for="description" class="form-label">Project Description</label>
         <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
       </div>
-
+    </div>
       <div class="text-end">
-        <button type="submit" class="btn btn-red" style="background-color:#8B0000;
-        color:white">Create</button>
+        <button type="submit" class="btn primary-btn" >Create</button>
       </div>
     </form>
+<div>
+    <style>
+  .form-label {
+    margin-bottom: .5rem;
+    font-weight: bold;
+}
+.div-form {
+    margin-left: -7rem;
+}
+</style>
 {% endblock %}
