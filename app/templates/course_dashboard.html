@@ -2,6 +2,7 @@
 {% block content %}
 
 <div class="project-dashboard">
+<<<<<<< HEAD
 
 
     <div class="d-flex justify-content-between align-items-center my-3">
@@ -17,6 +18,27 @@
                 <i class="fas fa-trash-alt me-1"></i> Delete Course
             </button>
         </form>
+=======
+    <button onclick="window.history.back()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+    <button class="del btn-danger-delete" data-bs-toggle="modal" data-bs-target="#deleteCourseModal">
+        <i class="fas fa-trash-alt me-1"></i> Delete Course
+    </button>
+
+<div class="container-fluid py-4">
+    <!-- Document Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">
+                {{ course.name }}
+            </h2>
+            <p class="text-muted mb-0">
+                <i class="far fa-calendar-alt me-1"></i>
+                Uploaded {{ course.generatedAt.strftime('%b %d, %Y at %H:%M') }}
+            </p>
+        </div>
+>>>>>>> 60ab7e51aa37e33b18e54e1e2f235118c593e28f
     </div>
 
     <div class="container-fluid py-4">
@@ -224,6 +246,7 @@
 
 </div>
 <style>
+<<<<<<< HEAD
     .del.btn-danger-delete {
         background-color: #dc3545;
         color: white;
@@ -235,6 +258,11 @@
     }
 
     .accordion-button {
+=======
+
+   
+     .accordion-button {
+>>>>>>> 60ab7e51aa37e33b18e54e1e2f235118c593e28f
         padding: 0.5rem 1rem;
         font-size: 0.875rem;
         background-color: white;
