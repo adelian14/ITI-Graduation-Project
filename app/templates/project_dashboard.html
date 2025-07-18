@@ -1,69 +1,628 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="project-dashboard">
+    <button onclick="window.history.back()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
 
-    <!-- Project Info -->
-    <div class="mb-5">
-      <h2 class="text-danger">{{ project.title }}</h2>
-      <p class="lead text-muted">{{ project.description }}</p>
-      <p class="text-secondary">Created at: {{ project.createdAt.strftime('%B %d, %Y') }}</p>
-    </div>
-
-    <!-- File Upload Section -->
-    <div class="mb-5">
-      <h4 class="text-danger mb-3">Upload a File</h4>
-      <form method="POST" action="/projects/{{ project.id }}/upload" enctype="multipart/form-data">
-        <div class="input-group">
-          <input type="file" class="form-control" name="file" required>
-          <button type="submit" class="btn btn-red">Upload</button>
+    <!-- Project Header -->
+    <div class="project-header">
+        <div class="project-meta">
+            <span class="badge"><i class="fas fa-book"></i> Project</span>
+            <span><i class="fas fa-calendar-alt"></i> Created: {{ project.createdAt.strftime('%B %d, %Y') }}</span>
         </div>
-      </form>
+        <h1 class="project-title">{{ project.title }}</h1>
+        <p class="project-description">{{ project.description }}</p>
+    </div>
+    <h2 class="page-header">Upload Your Files</h2>
+    <!-- Main Content Tabs -->
+    <div class="dashboard-tabs">
+        <!-- File Upload Section -->
+         
+        <div class="tab-section active" id="files-section">
+          
+            <div class="section-header">
+                <h2 class="section-title">
+                    
+                    
+                    <span class="badge">{{ project.documents|length }} files</span>
+                </h2>
+            </div>
+            
+            <div class="upload-area">
+                <form method="POST" action="/projects/{{ project.id }}/upload" enctype="multipart/form-data" class="upload-form">
+                    <div class="upload-prompt">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h3>Drag & drop files here</h3>
+                        <p>or click to browse your computer</p>
+                        <input type="file" class="file-input" name="file" required multiple>
+                    </div>
+                    <div class="selected-files" style="display: none;">
+                        <h4>Selected Files:</h4>
+                        <ul class="file-list"></ul>
+                    </div>
+                    <div class="upload-actions">
+                        <button type="submit" class="btn primary-btn">
+                            <i class="fas fa-upload"></i> Upload Files
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="documents-list">
+                {% if project.documents %}
+                <div class="document-grid">
+                    {% for doc in project.documents %}
+                        {% include 'components/document_card.html' %}
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>No files uploaded yet</h3>
+                    <p>Upload your first file to get started</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Courses Section (within tabs) -->
+        <div class="tab-section" id="courses-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-book"></i> Courses
+                    <span class="badge">{{ project.courses|length }} courses</span>
+                </h2>
+                <a href="/projects/{{ project.id }}/courses/create" class="btn primary-btn">
+                    <i class="fas fa-plus"></i> Create Course
+                </a>
+            </div>
+            
+            {% if project.courses %}
+            <div class="courses-table">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Modules</th>
+                                <th>Level</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for course in project.courses %}
+                                {% include 'components/course_row.html' %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-book"></i>
+                <h3>No courses created yet</h3>
+                <p>Create your first course to get started</p>
+                <!-- <a href="/projects/{{ project.id }}/courses/create" class="btn primary-btn">
+                    <i class="fas fa-plus"></i> Create Course
+                </a> -->
+            </div>
+            {% endif %}
+        </div>
     </div>
 
-    <!-- Uploaded Files -->
-    <div class="mb-5">
-      <h4 class="text-danger mb-3">My Files</h4>
-
-      {% if project.documents %}
-      <div class="row row-cols-1 row-cols-md-4 g-4">
-        {% for doc in project.documents %}
-        {% include 'components/document_card.html' %}
-        {% endfor %}
-      </div>
-      {% else %}
-      <p class="text-muted">No files uploaded yet.</p>
-      {% endif %}
+    <!-- Additional Courses Section (below tabs) -->
+    <div class="courses-section">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fas fa-book"></i> Courses
+                <span class="badge">{{ project.courses|length }} courses</span>
+            </h2>
+            <a href="/projects/{{ project.id }}/courses/create" class="btn primary-btn">
+                <i class="fas fa-plus"></i> Create Course
+            </a>
+        </div>
+        {% if project.courses %}
+        <div class="courses-table">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th class="text-center">Modules</th>
+                            <th class="text-center">Level</th>
+                            <th class="text-center">Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in project.courses %}
+                            {% include 'components/course_row.html' %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-book"></i>
+            <h3>No courses created yet</h3>
+            <p>Create your first course to get started</p>
+           
+        </div>
+        {% endif %}
+        
     </div>
+</div>
 
-    <div class="mb-5">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="text-danger mb-0">Courses</h4>
-        <a href="/projects/{{ project.id }}/courses/create" class="btn btn-red">
-          <i class="fas fa-plus me-1"></i> Create Course
-        </a>
-      </div>
-
-      {% if project.courses %}
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead class="table-light">
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th class="text-center">Modules</th>
-              <th class="text-center">Level</th>
-              <th class="text-center">Created</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for course in project.courses %}
-            {% include 'components/course_row.html' %}
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      {% else %}
-      <p class="text-muted">No courses created yet.</p>
-      {% endif %}
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle text-danger me-2"></i> Delete Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this project? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger delete-confirm-btn">Delete</button>
+            </div>
+        </div>
     </div>
+</div>
 
+<style>
+    /* Project Dashboard Container */
+    .project-dashboard {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    
+    
+    /* Project Header */
+    .project-header {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border: 1px solid rgba(91, 28, 28, 0.1);
+    }
+    
+    .project-title {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 1rem 0;
+    }
+    
+    .project-description {
+        color: var(--text-color);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 0.5rem;
+    }
+    
+    .project-meta {
+        display: flex;
+        gap: 1.5rem;
+        color: var(--text-color-light);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .project-meta i {
+        margin-right: 0.5rem;
+        color: var(--primary-color);
+    }
+    
+    .badge {
+        background: rgba(91, 28, 28, 0.1);
+        color: var(--primary-color);
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    /* Tabs Navigation */
+    .dashboard-tabs {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border: 1px solid rgba(91, 28, 28, 0.1);
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+    
+    .tab-section {
+        padding: 2rem;
+        display: none;
+    }
+    
+    .tab-section.active {
+        display: block;
+    }
+    
+    /* Section Header */
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+   
+    
+    /* Upload Area */
+    .upload-area {
+        margin-bottom: 3rem;
+    }
+    
+    .upload-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .upload-prompt {
+        border: 2px dashed rgba(91, 28, 28, 0.3);
+        border-radius: 12px;
+        padding: 3rem 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .upload-prompt:hover {
+        border-color: var(--primary-color);
+        background: rgba(91, 28, 28, 0.03);
+    }
+    
+    .upload-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    
+ Imitating human: .upload-prompt h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: var(--primary-color);
+    }
+    
+    .upload-prompt p {
+        color: var(--text-color-light);
+        margin-bottom: 0;
+        font-size: 0.95rem;
+    }
+    
+    .file-input {
+        display: none;
+    }
+    
+    .upload-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* Selected Files List */
+    .selected-files {
+        padding: 1rem;
+        background: rgba(91, 28, 28, 0.05);
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+    
+    .file-list {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0 0 0;
+    }
+    
+    .file-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(91, 28, 28, 0.1);
+    }
+    
+    .file-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .file-list .file-name {
+        color: var(--primary-color);
+        font-weight: 500;
+    }
+    
+    .file-list .file-size {
+        color: var(--text-color-light);
+        font-size: 0.9rem;
+    }
+    
+    /* Document Grid */
+    .document-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    /* Courses Table */
+    .courses-table {
+        overflow-x: auto;
+    }
+    
+    .courses-table table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .courses-table th {
+        background: rgba(91, 28, 28, 0.05);
+        color: var(--primary-color);
+        font-weight: 600;
+        padding: 1rem;
+        text-align: left;
+    }
+    
+    .courses-table td {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(91, 28, 28, 0.1);
+        vertical-align: middle;
+    }
+    
+    .courses-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: var(--text-color-light);
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+        color: rgba(91, 28, 28, 0.2);
+        margin-bottom: 1.5rem;
+    }
+    
+    .empty-state h3 {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+        font-size: 1.3rem;
+    }
+    
+    .empty-state p {
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+    }
+    
+    /* Buttons */
+    .btn {
+        padding: 0.7rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .primary-btn {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .primary-btn:hover {
+        background: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(91, 28, 28, 0.2);
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .project-dashboard {
+            padding: 1.5rem;
+        }
+        
+        .document-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .project-dashboard {
+            padding: 1rem;
+        }
+        
+        .project-header {
+            padding: 1.5rem;
+        }
+        
+        .project-title {
+            font-size: 1.5rem;
+        }
+        
+        .project-description {
+            font-size: 1rem;
+        }
+        
+        .project-meta {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .tab-section {
+            padding: 1.5rem;
+        }
+        
+        .document-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    /* Courses Section (below tabs) */
+    .courses-section {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border: 1px solid rgba(91, 28, 28, 0.1);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Bootstrap modal
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        let itemToDelete = null;
+        
+        // Handle delete button clicks
+        document.querySelectorAll('.btn-delete').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                itemToDelete = this.closest('.project-card') || this.closest('.document-card') || this.closest('.course-row');
+                deleteModal.show();
+            });
+        });
+        
+        // Handle delete confirmation
+        document.querySelector('.delete-confirm-btn').addEventListener('click', function() {
+            if (itemToDelete) {
+                itemToDelete.remove();
+                deleteModal.hide();
+                itemToDelete = null;
+                
+                // Show empty state if no items left
+                if (document.querySelectorAll('.document-card').length === 0) {
+                    document.querySelector('.documents-list').innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-folder-open"></i>
+                            <h3>No files uploaded yet</h3>
+                            <p>Upload your first file to get started</p>
+                        </div>
+                    `;
+                }
+            }
+        });
+        
+        // Tab functionality
+        const tabSections = document.querySelectorAll('.tab-section');
+        const tabButtons = document.querySelectorAll('.tab-button');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Hide all sections
+                tabSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show selected section
+                const targetSection = document.getElementById(this.dataset.target);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+                
+                // Update active tab button
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        // File upload area interaction
+        const uploadPrompt = document.querySelector('.upload-prompt');
+        const fileInput = document.querySelector('.file-input');
+        const selectedFilesContainer = document.querySelector('.selected-files');
+        const fileList = document.querySelector('.file-list');
+        
+        if (uploadPrompt && fileInput && selectedFilesContainer && fileList) {
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' B';
+                else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                else if (bytes < 1073741824) return (bytes / 1048576).toFixed(1) + ' MB';
+                else return (bytes / 1073741824).toFixed(1) + ' GB';
+            }
+            
+            function updateFileList(files) {
+                fileList.innerHTML = '';
+                if (files.length > 0) {
+                    selectedFilesContainer.style.display = 'block';
+                    uploadPrompt.querySelector('h3').textContent = `${files.length} file(s) selected`;
+                    uploadPrompt.querySelector('p').textContent = 'Click upload to proceed';
+                    
+                    Array.from(files).forEach(file => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `
+                            <span class="file-name">${file.name}</span>
+                            <span class="file-size">${formatFileSize(file.size)}</span>
+                        `;
+                        fileList.appendChild(li);
+                    });
+                } else {
+                    selectedFilesContainer.style.display = 'none';
+                    uploadPrompt.querySelector('h3').textContent = 'Drag & drop files here';
+                    uploadPrompt.querySelector('p').textContent = 'or click to browse your computer';
+                }
+            }
+            
+            uploadPrompt.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', function() {
+                updateFileList(this.files);
+            });
+            
+            // Drag and drop functionality
+            uploadPrompt.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--primary-color)';
+                this.style.backgroundColor = 'rgba(91, 28, 28, 0.05)';
+            });
+            
+            uploadPrompt.addEventListener('dragleave', function() {
+                this.style.borderColor = 'rgba(91, 28, 28, 0.3)';
+                this.style.backgroundColor = 'transparent';
+            });
+            
+            uploadPrompt.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'rgba(91, 28, 28, 0.3)';
+                this.style.backgroundColor = 'transparent';
+                
+                fileInput.files = e.dataTransfer.files;
+                updateFileList(e.dataTransfer.files);
+            });
+        }
+    });
+</script>
 {% endblock %}
