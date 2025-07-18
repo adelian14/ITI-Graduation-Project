@@ -24,7 +24,7 @@ def get_project_metadata() -> list:
             .select(["id", "title", "description"])
             .stream()
         )
-    return [{"id": doc.get("id"), "title": doc.get("title"), "description": doc.get("description"), "content": doc.get("parsedContent", None)} for doc in docs]
+    return [{"id": doc.get("id"), "title": doc.get("title"), "description": doc.get("description")} for doc in docs]
 
 def get_project_metadata_by_id(project_id: str):
     doc = db.collection(PROJECTS_COLLECTION).document(project_id).get()
