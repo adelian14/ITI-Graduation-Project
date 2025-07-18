@@ -4,12 +4,15 @@
     <button onclick="window.history.back()" class="btn-back">
         <i class="fas fa-arrow-left"></i> Back
     </button>
-   
+   <button class="del btn-danger-delete" data-bs-toggle="modal" data-bs-target="#deleteCourseModal">
+                <i class="fas fa-trash-alt me-1"></i> Delete Course
+            </button>
     <!-- Project Header -->
     <div class="project-header">
         <div class="project-meta">
             <span class="badge"><i class="fas fa-book"></i> Project</span>
             <span><i class="fas fa-calendar-alt"></i> Created: {{ project.createdAt.strftime('%B %d, %Y') }}</span>
+        </button>
         </div>
         
         <h1 class="project-title">{{ project.title }}</h1>
