@@ -1,10 +1,9 @@
 <div class="col">
   <div class="card h-100 border-0 shadow-sm position-relative group" style="overflow: hidden;">
-    
+
     <!-- Trash Bin Overlay -->
-    <form method="POST" action="/projects/{{ project.id }}/documents/{{ doc.id }}/delete"
-          class="delete-overlay"
-          onsubmit="return confirm('Delete this file?');">
+    <form method="POST" action="/projects/{{ project.id }}/documents/{{ doc.id }}/delete" class="delete-overlay"
+      onsubmit="return confirm('Delete this file?');">
       <!--<button type="submit" class="btn btn-trash">
         <i class="fas fa-trash-alt"></i>
       </button>-->
@@ -15,8 +14,20 @@
       <div class="card-body text-center">
         <i class="fas fa-file-alt fa-3x text-primary"></i>
         <h6 class="mt-2">{{ doc.name }}.{{ doc.extension }}</h6>
-        <small class="text-muted">{{ doc.uploadedAt.strftime('%Y-%m-%d %H:%M') }}</small>
+        <small class="text-muted d-block mb-2">{{ doc.uploadedAt.strftime('%Y-%m-%d %H:%M') }}</small>
+
+        {% if doc.parsedContent %}
+        <span class="badge bg-success">
+          <i class="fas fa-check-circle me-1"></i>Parsed successfully
+        </span>
+        {% else %}
+        <span class="badge bg-secondary">
+          <i class="fas fa-play-circle me-1"></i>Click to parse
+        </span>
+        {% endif %}
       </div>
     </a>
+
+
   </div>
 </div>

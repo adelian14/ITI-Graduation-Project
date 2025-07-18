@@ -432,6 +432,7 @@
 </style>
 
 <script>
+    /*
     document.addEventListener('DOMContentLoaded', function() {
         // Handle continue button clicks
         document.querySelectorAll('.btn-continue').forEach(button => {
@@ -444,16 +445,16 @@
                 // After 1 second, switch to upload state
                 setTimeout(() => {
                     this.classList.remove('loading');
-                    this.classList.add('uploading');
+                    this.classList.add('uploadin');
                     
                     // After upload completes (simulated with 2 seconds)
                     setTimeout(() => {
                         // Remove uploading state and navigate
-                        this.classList.remove('uploading');
+                        this.classList.remove('uploadin');
                         window.location.href = this.getAttribute('href');
-                    }, 2000);
+                    }, 200);
                     
-                }, 1000);
+                }, 200);
             });
         });
         
@@ -519,5 +520,6 @@
             }
         });
     });
+    */
 </script>
 {% endblock %}
