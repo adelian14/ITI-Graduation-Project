@@ -36,18 +36,7 @@
 
         <div class="row">
             {% for version in topic.get_all_topics() %}
-            <div class="col-md-4 mb-3">
-                <div class="card h-100 shadow-sm border border-light">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ version.title }}</h5>
-                        <p class="card-subtitle mb-2 text-muted">Level: {{ version.lessonSetting.experienceLevel }}</p>
-                        <p class="card-text"><small>Generated on {{ version.generatedAt.strftime('%Y-%m-%d %H:%M')
-                                }}</small></p>
-                        <a href="/projects/{{ project.id }}/gen_material/{{ version.id }}"
-                            class="btn primary-btn">View</a>
-                    </div>
-                </div>
-            </div>
+                {% include 'components/topic_version_card.html' %}
             {% endfor %}
         </div>
 </div>
