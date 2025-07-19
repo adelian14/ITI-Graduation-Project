@@ -1,96 +1,552 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<div class="container py-5">
-    <div class="d-flex justify-content-between align-items-start flex-wrap mb-4">
-        <div>
-            <h2 class="text-danger mb-1">{{ version.title }}</h2>
-            <p class="text-muted mb-0">Generated At: {{ version.generatedAt.strftime('%Y-%m-%d %H:%M') }}</p>
-        </div>
-    </div>
+<div class="project-dashboard">
+    <button onclick="window.history.back()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
 
-    <div class="card shadow-sm mb-4 border-light">
-        <div class="card-body">
-            <h5 class="card-title mb-3">📚 Lesson Settings</h5>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong>Language:</strong> {{ version.lessonSetting.narrativeLanguage }}
-                </li>
-                <li class="list-group-item"><strong>Explanatory Style:</strong> {{
-                    version.lessonSetting.explanatoryStyle }}</li>
-                <li class="list-group-item"><strong>Teaching Tone:</strong> {{ version.lessonSetting.teachingTone }}
-                </li>
-                <li class="list-group-item"><strong>Age Group:</strong> {{ version.lessonSetting.ageGroup }}</li>
-                <li class="list-group-item"><strong>Experience Level:</strong> {{ version.lessonSetting.experienceLevel
-                    }}</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="accordion" id="contentAccordion">
-
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingRaw">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseRaw">
-                    📝 Raw Content
-                </button>
-            </h2>
-            <div id="collapseRaw" class="accordion-collapse collapse" data-bs-parent="#contentAccordion">
-                <div class="accordion-body collapsible-section bg-light p-3 rounded">
-                    {{ (version.rawLesson or version.rawTopic).replace('\n', '\n') | markdown | safe }}
-                </div>
-            </div>
+    <div class="version-container">
+        <div class="version-header">
+            <h2 class="page-header">{{ version.title }}</h2>
+            <p class="version-meta">Generated on {{ version.generatedAt.strftime('%Y-%m-%d %H:%M') }}</p>
         </div>
 
-        {% if version.narrative %}
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingNarrative">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseNarrative">
-                    📝 Narrative
-                </button>
-            </h2>
-            <div id="collapseNarrative" class="accordion-collapse collapse" data-bs-parent="#contentAccordion">
-                <div class="accordion-body collapsible-section bg-light p-3 rounded">
-                    {{ version.narrative.replace('\n', '\n') | markdown | safe }}
-                </div>
-            </div>
-        </div>
-        {% endif %}
-
-        {% if version.videoScript %}
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingScript">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseScript">
-                    📝 Video Script
-                </button>
-            </h2>
-            <div id="collapseScript" class="accordion-collapse collapse" data-bs-parent="#contentAccordion">
-                <div class="accordion-body collapsible-section bg-light p-3 rounded">
-                    {{ version.videoScript.replace('\n', '\n') | markdown | safe }}
-                </div>
-            </div>
-        </div>
-        {% endif %}
-
-
-    </div>
-
-    {% if version.slides %}
-    <div class="d-flex justify-content-center mt-5">
-        <div class="card text-center shadow-sm border-light px-4 py-5" style="max-width: 500px; width: 100%;">
-            <div class="card-body">
-                <h5 class="card-title mb-3 text-success">
-                    <i class="bi bi-check-circle me-1"></i> Presentation Ready
+        <!-- Lesson Settings Card -->
+        <div class="settings-card">
+            <div class="card-content">
+                <h5 class="card-section-title">
+                    <i class="fas fa-cog"></i> Lesson Settings
                 </h5>
-                <p class="card-text text-muted mb-4">Download your generated slides below.</p>
-                <a href="{{ version.slides }}" class="btn btn-danger btn-lg fw-bold shadow-sm px-4" download>
-                    <i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download Slides
+                <ul class="settings-list">
+                    <li class="setting-item">
+                        <span class="setting-label">Language:</span>
+                        <span class="setting-value">{{ version.lessonSetting.narrativeLanguage }}</span>
+                    </li>
+                    <li class="setting-item">
+                        <span class="setting-label">Explanatory Style:</span>
+                        <span class="setting-value">{{ version.lessonSetting.explanatoryStyle }}</span>
+                    </li>
+                    <li class="setting-item">
+                        <span class="setting-label">Teaching Tone:</span>
+                        <span class="setting-value">{{ version.lessonSetting.teachingTone }}</span>
+                    </li>
+                    <li class="setting-item">
+                        <span class="setting-label">Age Group:</span>
+                        <span class="setting-value">{{ version.lessonSetting.ageGroup }}</span>
+                    </li>
+                    <li class="setting-item">
+                        <span class="setting-label">Experience Level:</span>
+                        <span class="setting-value">{{ version.lessonSetting.experienceLevel }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Content Accordion -->
+        <div class="content-accordion">
+            <!-- Raw Content -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <button class="accordion-button">
+                        <i class="fas fa-file-alt accordion-icon"></i>
+                        <span class="accordion-title">Raw Content</span>
+                        <i class="fas fa-chevron-down accordion-arrow"></i>
+                    </button>
+                </div>
+                <div class="accordion-content">
+                    <div class="content-header">
+                        <div class="content-info">
+                            <span class="content-badge">Original Version</span>
+                            <span class="content-length">{{ (version.rawLesson or version.rawTopic)|length }} characters</span>
+                        </div>
+                        <button class="btn-copy" data-content="{{ (version.rawLesson or version.rawTopic)|escape }}">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="content-body markdown-content">
+                        {{ (version.rawLesson or version.rawTopic).replace('\n', '\n') | markdown | safe }}
+                    </div>
+                </div>
+            </div>
+
+            {% if version.narrative %}
+            <!-- Narrative -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <button class="accordion-button">
+                        <i class="fas fa-book-open accordion-icon"></i>
+                        <span class="accordion-title">Narrative</span>
+                        <i class="fas fa-chevron-down accordion-arrow"></i>
+                    </button>
+                </div>
+                <div class="accordion-content">
+                    <div class="content-header">
+                        <div class="content-info">
+                            <span class="content-badge">Teaching Version</span>
+                            <span class="content-length">{{ version.narrative|length }} characters</span>
+                        </div>
+                        <button class="btn-copy" data-content="{{ version.narrative|escape }}">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="content-body markdown-content">
+                        {{ version.narrative.replace('\n', '\n') | markdown | safe }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if version.videoScript %}
+            <!-- Video Script -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <button class="accordion-button">
+                        <i class="fas fa-video accordion-icon"></i>
+                        <span class="accordion-title">Video Script</span>
+                        <i class="fas fa-chevron-down accordion-arrow"></i>
+                    </button>
+                </div>
+                <div class="accordion-content">
+                    <div class="content-header">
+                        <div class="content-info">
+                            <span class="content-badge">Production Ready</span>
+                            <span class="content-length">{{ version.videoScript|length }} characters</span>
+                        </div>
+                        <div class="content-actions">
+                            <button class="btn-copy" data-content="{{ version.videoScript|escape }}">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button class="btn-download-script">
+                                <i class="fas fa-file-export"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                    <div class="content-body markdown-content script-content">
+                        {{ version.videoScript.replace('\n', '\n') | markdown | safe }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if version.slides %}
+        <!-- Slides Download Card -->
+        <div class="download-card">
+            <div class="card-content">
+                <div class="download-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h5 class="download-title">Presentation Ready</h5>
+                <p class="download-text">Download your generated slides below.</p>
+                <a href="{{ version.slides }}" class="btn-download" download>
+                    <i class="fas fa-file-download"></i> Download Slides
                 </a>
             </div>
         </div>
+        {% endif %}
     </div>
-    {% endif %}
 </div>
+
+<style>
+
+    /* Header */
+    .version-header {
+        margin-bottom: 2rem;
+    }
+
+    .page-header {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    .page-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: var(--primary-color);
+        border-radius: 3px;
+    }
+
+    .version-meta {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    /* Settings card */
+    .settings-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(91, 28, 28, 0.1);
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
+
+    .card-content {
+        padding: 1.5rem;
+    }
+
+    .card-section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .card-section-title i {
+        color: var(--primary-color);
+    }
+
+    .settings-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .setting-item {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+    }
+
+    .setting-item:last-child {
+        border-bottom: none;
+    }
+
+    .setting-label {
+        font-weight: 500;
+        color: var(--dark-color);
+        min-width: 150px;
+    }
+
+    .setting-value {
+        color: var(--text-color);
+    }
+
+    /* Accordion */
+    .content-accordion {
+        margin-bottom: 2rem;
+    }
+
+    .accordion-item {
+        margin-bottom: 1.5rem;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(91, 28, 28, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .accordion-item:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+    }
+
+    .accordion-item.active {
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .accordion-header {
+        background: white;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .accordion-button {
+        width: 100%;
+        padding: 1.25rem 1.5rem;
+        background: none;
+        border: none;
+        text-align: left;
+        font-weight: 500;
+        color: var(--dark-color);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .accordion-button:hover {
+        background: rgba(139, 0, 0, 0.03);
+    }
+
+    .accordion-icon {
+        color: var(--primary-color);
+        font-size: 1.1rem;
+        width: 24px;
+        text-align: center;
+    }
+
+    .accordion-title {
+        flex-grow: 1;
+        font-weight: 600;
+    }
+
+    .accordion-arrow {
+        transition: transform 0.3s ease;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .accordion-item.active .accordion-arrow {
+        transform: rotate(180deg);
+    }
+
+    /* Content Header */
+    .content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        background: rgba(139, 0, 0, 0.03);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .content-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .content-badge {
+        background: rgba(139, 0, 0, 0.1);
+        color: var(--primary-color);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .content-length {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+    }
+
+    .content-actions {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    /* Buttons */
+    .btn-copy, .btn-download-script {
+        background: white;
+        border: 1px solid #ddd;
+        color: var(--text-color);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-copy:hover {
+        background: var(--light-gray);
+        border-color: #ccc;
+    }
+
+    .btn-download-script {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    .btn-download-script:hover {
+        background: var(--secondary-color);
+        border-color: var(--secondary-color);
+    }
+
+    /* Content Body */
+    .content-body {
+        padding: 1.5rem;
+        background: white;
+    }
+
+    .markdown-content {
+        line-height: 1.7;
+        color: var(--text-color);
+    }
+
+    .markdown-content h2, 
+    .markdown-content h3 {
+        color: var(--dark-color);
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .markdown-content p {
+        margin-bottom: 1rem;
+    }
+
+    .markdown-content ul, 
+    .markdown-content ol {
+        padding-left: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .script-content {
+        font-family: 'Courier New', monospace;
+        background: #f8f9fa;
+        border-radius: 6px;
+        padding: 1rem;
+        overflow-x: auto;
+    }
+
+    /* Download card */
+    .download-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(91, 28, 28, 0.1);
+        max-width: 500px;
+        margin: 2rem auto 0;
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .download-icon {
+        color: #28a745;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .download-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--dark-color);
+    }
+
+    .download-text {
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-download {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 2px 8px rgba(139, 0, 0, 0.2);
+    }
+
+    .btn-download:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .project-dashboard {
+            padding: 1.5rem;
+        }
+
+        .version-container {
+            padding: 1.5rem;
+        }
+
+        .setting-item {
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .setting-label {
+            min-width: auto;
+        }
+
+        .content-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .content-actions {
+            width: 100%;
+            justify-content: flex-end;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Accordion functionality
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        
+        accordionItems.forEach(item => {
+            const button = item.querySelector('.accordion-button');
+            const content = item.querySelector('.accordion-content');
+            
+            button.addEventListener('click', function() {
+                const wasActive = item.classList.contains('active');
+                
+                // Close all items
+                accordionItems.forEach(i => {
+                    i.classList.remove('active');
+                    i.querySelector('.accordion-content').style.display = 'none';
+                });
+                
+                // Open current if it wasn't active
+                if (!wasActive) {
+                    item.classList.add('active');
+                    content.style.display = 'block';
+                }
+            });
+        });
+        
+        // Open first accordion by default
+        if (accordionItems.length > 0) {
+            accordionItems[0].classList.add('active');
+            accordionItems[0].querySelector('.accordion-content').style.display = 'block';
+        }
+        
+        // Copy functionality
+        document.querySelectorAll('.btn-copy').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const content = this.getAttribute('data-content');
+                navigator.clipboard.writeText(content).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+        });
+        
+        // Export script functionality
+        document.querySelectorAll('.btn-download-script').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const content = this.closest('.accordion-item').querySelector('.markdown-content').innerText;
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'video-script.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        });
+    });
+</script>
 {% endblock %}

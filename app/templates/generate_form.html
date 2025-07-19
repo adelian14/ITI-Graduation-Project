@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-        <h2 class="mb-4">Customize for your target audience</h2>
-        <form method="POST" action="{{ form_action }}">
-
-            <!-- General Customization -->
-            <h5>General customization:</h5>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Age Group</label>
+<div class="customization-container">
+    <button onclick="window.history.back()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+    
+    <h2 class="page-header">Customize for your target audience</h2>
+    
+    <form method="POST" action="{{ form_action }}" class="customization-form">
+        <!-- General Customization -->
+        <div class="form-section">
+            <h5 class="section-title-h5">General customization</h5>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Age Group</label>
                     <select name="age_group" class="form-select">
                         {% for k, v in age_groups.items() %}
                         <option value="{{ k }}" {% if k==default_age %}selected{% endif %}>{{ v }}</option>
@@ -15,8 +21,8 @@
                     </select>
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Experience Level</label>
+                <div class="form-group">
+                    <label class="form-label">Experience Level</label>
                     <select name="experience_level" class="form-select">
                         {% for k, v in experience_levels.items() %}
                         <option value="{{ k }}" {% if k==default_experience %}selected{% endif %}>{{ v }}</option>
@@ -25,23 +31,22 @@
                 </div>
             </div>
 
-            <!-- Explanatory Style -->
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Explanatory Style</label>
+            <div class="form-group">
+                <label class="form-label">Explanatory Style</label>
                 <select name="explanatory_style" class="form-select">
                     {% for k, v in explanatory_styles.items() %}
                     <option value="{{ k }}" {% if k==default_explanatory_style %}selected{% endif %}>{{ v }}</option>
                     {% endfor %}
                 </select>
             </div>
+        </div>
 
-            <hr>
-
-            <!-- Narrative Customization -->
-            <h5 class="mt-4">Narrative customization:</h5>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Narrative Language</label>
+        <!-- Narrative Customization -->
+        <div class="form-section">
+            <h5 class="section-title">Narrative customization</h5>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Narrative Language</label>
                     <select name="language" class="form-select">
                         {% for k, v in languages.items() %}
                         <option value="{{ k }}" {% if k==default_language %}selected{% endif %}>{{ v }}</option>
@@ -49,8 +54,8 @@
                     </select>
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Teaching Tone</label>
+                <div class="form-group">
+                    <label class="form-label">Teaching Tone</label>
                     <select name="teaching_tone" class="form-select">
                         {% for k, v in teaching_tones.items() %}
                         <option value="{{ k }}" {% if k==default_tone %}selected{% endif %}>{{ v }}</option>
@@ -58,11 +63,126 @@
                     </select>
                 </div>
             </div>
+        </div>
 
-            <!-- Inside the <form> -->
-            <div class="d-flex justify-content-center mt-4">
-                <button type="submit" class="btn btn-danger px-5">Generate Material</button>
-            </div>
+        <div class="form-actions">
+            <button type="submit" class="btn-generate">Generate Material</button>
+        </div>
+    </form>
+</div>
 
-        </form>
+<style>
+  
+
+    /* Form styling */
+    .customization-form {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(91, 28, 28, 0.1);
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+    }
+
+    .section-title-h5 {
+        font-size: 1.2rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        position: relative;
+        padding-left: 1rem;
+    }
+
+    .section-title-h5::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 1.2rem;
+        background: var(--primary-color);
+        border-radius: 2px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        flex: 1;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--dark-color);
+    }
+
+    .form-select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: white;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 16px 12px;
+    }
+
+    .form-select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.1);
+    }
+
+    /* Form actions */
+    .form-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .btn-generate {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(139, 0, 0, 0.2);
+    }
+
+    .btn-generate:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .customization-container {
+            padding: 1.5rem;
+        }
+
+        .form-row {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+</style>
 {% endblock %}
